@@ -1,0 +1,308 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`==Framework Infrastructure== snapshot test 1`] = `
+Object {
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Conditions": Object {
+    "apacheCheck": Object {
+      "Fn::Equals": Array [
+        Object {
+          "Ref": "ApacheWorkload",
+        },
+        "Yes",
+      ],
+    },
+    "apacheDemoCheck": Object {
+      "Fn::And": Array [
+        Object {
+          "Fn::Equals": Array [
+            Object {
+              "Ref": "ApacheDemoInstance",
+            },
+            "Yes",
+          ],
+        },
+        Object {
+          "Fn::Equals": Array [
+            Object {
+              "Ref": "ApacheWorkload",
+            },
+            "Yes",
+          ],
+        },
+      ],
+    },
+  },
+  "Description": "(SO0158) - The AWS CloudFormation template for deployment of the %%SOLUTION_NAME%%. Version %%VERSION%%",
+  "Metadata": Object {
+    "AWS::CloudFormation::Interface": Object {
+      "ParameterGroups": Array [
+        Object {
+          "Label": Object {
+            "default": "Do you want to deploy CloudWatch dashboard to monitor Apache workload?",
+          },
+          "Parameters": Array [
+            "ApacheWorkload",
+            "ApacheTagSchema",
+            "ApacheDemoInstance",
+          ],
+        },
+      ],
+      "ParameterLabels": Object {
+        "ApacheDemoInstance": Object {
+          "default": "Apache Demo Instance",
+        },
+        "ApacheTagSchema": Object {
+          "default": "Apache Tagging Schema",
+        },
+        "ApacheWorkload": Object {
+          "default": "Deploy",
+        },
+      },
+    },
+  },
+  "Outputs": Object {
+    "DeployApache": Object {
+      "Description": "Should the framework deploy dashboard for Apache workload?",
+      "Value": Object {
+        "Ref": "ApacheWorkload",
+      },
+    },
+  },
+  "Parameters": Object {
+    "ApacheDemoInstance": Object {
+      "AllowedValues": Array [
+        "Yes",
+        "No",
+      ],
+      "Default": "Yes",
+      "Description": "Do you want to deploy apache workload demo instance?",
+      "Type": "String",
+    },
+    "ApacheTagSchema": Object {
+      "Default": "{\\"Key\\":\\"CW-Dashboard\\",\\"Value\\":\\"Apache\\"}",
+      "Description": "Tagging Schema to identify apache workload instances",
+      "Type": "String",
+    },
+    "ApacheWorkload": Object {
+      "AllowedValues": Array [
+        "Yes",
+        "No",
+      ],
+      "Default": "Yes",
+      "Type": "String",
+    },
+    "AssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdArtifactHash90C00791": Object {
+      "Description": "Artifact hash for asset \\"0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fd\\"",
+      "Type": "String",
+    },
+    "AssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3BucketACCFDBDA": Object {
+      "Description": "S3 bucket for asset \\"0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fd\\"",
+      "Type": "String",
+    },
+    "AssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3VersionKey4F5D9A22": Object {
+      "Description": "S3 key for asset version \\"0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fd\\"",
+      "Type": "String",
+    },
+    "AssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1ArtifactHashCCF81BD7": Object {
+      "Description": "Artifact hash for asset \\"11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1\\"",
+      "Type": "String",
+    },
+    "AssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3BucketCDD6CF2A": Object {
+      "Description": "S3 bucket for asset \\"11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1\\"",
+      "Type": "String",
+    },
+    "AssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3VersionKey97BD9BBE": Object {
+      "Description": "S3 key for asset version \\"11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1\\"",
+      "Type": "String",
+    },
+    "AssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23ArtifactHash37A45AC1": Object {
+      "Description": "Artifact hash for asset \\"494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23\\"",
+      "Type": "String",
+    },
+    "AssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3Bucket6A6CD744": Object {
+      "Description": "S3 bucket for asset \\"494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23\\"",
+      "Type": "String",
+    },
+    "AssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3VersionKeyADC77DD7": Object {
+      "Description": "S3 key for asset version \\"494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23\\"",
+      "Type": "String",
+    },
+    "AssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cArtifactHash627DAAA7": Object {
+      "Description": "Artifact hash for asset \\"c691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49c\\"",
+      "Type": "String",
+    },
+    "AssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3BucketEAC9DD43": Object {
+      "Description": "S3 bucket for asset \\"c691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49c\\"",
+      "Type": "String",
+    },
+    "AssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3VersionKeyDD9AE9E7": Object {
+      "Description": "S3 key for asset version \\"c691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49c\\"",
+      "Type": "String",
+    },
+    "AssetParametersd9c1997819907171a862f51cac5cbea06286b3db41c69951e2c405124e28535dArtifactHash6A3C96E0": Object {
+      "Description": "Artifact hash for asset \\"d9c1997819907171a862f51cac5cbea06286b3db41c69951e2c405124e28535d\\"",
+      "Type": "String",
+    },
+    "AssetParametersd9c1997819907171a862f51cac5cbea06286b3db41c69951e2c405124e28535dS3Bucket01D356B3": Object {
+      "Description": "S3 bucket for asset \\"d9c1997819907171a862f51cac5cbea06286b3db41c69951e2c405124e28535d\\"",
+      "Type": "String",
+    },
+    "AssetParametersd9c1997819907171a862f51cac5cbea06286b3db41c69951e2c405124e28535dS3VersionKey2421EA45": Object {
+      "Description": "S3 key for asset version \\"d9c1997819907171a862f51cac5cbea06286b3db41c69951e2c405124e28535d\\"",
+      "Type": "String",
+    },
+    "AssetParametersf3f8311cef3f0e96e0b03bae54a7aa7dd84defb1d2a357541365f494c7039f33ArtifactHashB6DC7E62": Object {
+      "Description": "Artifact hash for asset \\"f3f8311cef3f0e96e0b03bae54a7aa7dd84defb1d2a357541365f494c7039f33\\"",
+      "Type": "String",
+    },
+    "AssetParametersf3f8311cef3f0e96e0b03bae54a7aa7dd84defb1d2a357541365f494c7039f33S3BucketB6D5D4AB": Object {
+      "Description": "S3 bucket for asset \\"f3f8311cef3f0e96e0b03bae54a7aa7dd84defb1d2a357541365f494c7039f33\\"",
+      "Type": "String",
+    },
+    "AssetParametersf3f8311cef3f0e96e0b03bae54a7aa7dd84defb1d2a357541365f494c7039f33S3VersionKeyD3198973": Object {
+      "Description": "S3 key for asset version \\"f3f8311cef3f0e96e0b03bae54a7aa7dd84defb1d2a357541365f494c7039f33\\"",
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "ApacheDemoStackNestedStackApacheDemoStackNestedStackResource7B26F4BE": Object {
+      "Condition": "apacheDemoCheck",
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "TemplateURL": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "https://s3.",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ".",
+              Object {
+                "Ref": "AWS::URLSuffix",
+              },
+              "/",
+              Object {
+                "Ref": "AssetParametersf3f8311cef3f0e96e0b03bae54a7aa7dd84defb1d2a357541365f494c7039f33S3BucketB6D5D4AB",
+              },
+              "/",
+              Object {
+                "Fn::Select": Array [
+                  0,
+                  Object {
+                    "Fn::Split": Array [
+                      "||",
+                      Object {
+                        "Ref": "AssetParametersf3f8311cef3f0e96e0b03bae54a7aa7dd84defb1d2a357541365f494c7039f33S3VersionKeyD3198973",
+                      },
+                    ],
+                  },
+                ],
+              },
+              Object {
+                "Fn::Select": Array [
+                  1,
+                  Object {
+                    "Fn::Split": Array [
+                      "||",
+                      Object {
+                        "Ref": "AssetParametersf3f8311cef3f0e96e0b03bae54a7aa7dd84defb1d2a357541365f494c7039f33S3VersionKeyD3198973",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::CloudFormation::Stack",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ApacheStackNestedStackApacheStackNestedStackResourceE7714DA1": Object {
+      "Condition": "apacheCheck",
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "Parameters": Object {
+          "TagSchema": Object {
+            "Ref": "ApacheTagSchema",
+          },
+          "referencetoFrameworkAssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3Bucket5F174DD5Ref": Object {
+            "Ref": "AssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3BucketACCFDBDA",
+          },
+          "referencetoFrameworkAssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3VersionKey346E904FRef": Object {
+            "Ref": "AssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3VersionKey4F5D9A22",
+          },
+          "referencetoFrameworkAssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3BucketA064AA0ERef": Object {
+            "Ref": "AssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3BucketCDD6CF2A",
+          },
+          "referencetoFrameworkAssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3VersionKey5A45A141Ref": Object {
+            "Ref": "AssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3VersionKey97BD9BBE",
+          },
+          "referencetoFrameworkAssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3BucketEDFCB171Ref": Object {
+            "Ref": "AssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3Bucket6A6CD744",
+          },
+          "referencetoFrameworkAssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3VersionKeyB86202E6Ref": Object {
+            "Ref": "AssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3VersionKeyADC77DD7",
+          },
+          "referencetoFrameworkAssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3BucketA251523ERef": Object {
+            "Ref": "AssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3BucketEAC9DD43",
+          },
+          "referencetoFrameworkAssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3VersionKey391A70E1Ref": Object {
+            "Ref": "AssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3VersionKeyDD9AE9E7",
+          },
+        },
+        "TemplateURL": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "https://s3.",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ".",
+              Object {
+                "Ref": "AWS::URLSuffix",
+              },
+              "/",
+              Object {
+                "Ref": "AssetParametersd9c1997819907171a862f51cac5cbea06286b3db41c69951e2c405124e28535dS3Bucket01D356B3",
+              },
+              "/",
+              Object {
+                "Fn::Select": Array [
+                  0,
+                  Object {
+                    "Fn::Split": Array [
+                      "||",
+                      Object {
+                        "Ref": "AssetParametersd9c1997819907171a862f51cac5cbea06286b3db41c69951e2c405124e28535dS3VersionKey2421EA45",
+                      },
+                    ],
+                  },
+                ],
+              },
+              Object {
+                "Fn::Select": Array [
+                  1,
+                  Object {
+                    "Fn::Split": Array [
+                      "||",
+                      Object {
+                        "Ref": "AssetParametersd9c1997819907171a862f51cac5cbea06286b3db41c69951e2c405124e28535dS3VersionKey2421EA45",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::CloudFormation::Stack",
+      "UpdateReplacePolicy": "Delete",
+    },
+  },
+}
+`;

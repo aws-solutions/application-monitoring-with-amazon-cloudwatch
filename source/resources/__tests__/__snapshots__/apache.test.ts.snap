@@ -1,0 +1,1095 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`==Apache Infrastructure== snapshot test 1`] = `
+Object {
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "(SO0158Ap) - The AWS CloudFormation template for deployment of the %%SOLUTION_NAME%% Apache workload infrastructure. Version %%VERSION%%",
+  "Mappings": Object {
+    "StackMap": Object {
+      "Apache": Object {
+        "AccessLog": "/cw-monitoring-framework/apache/access",
+        "SSMParameter": "/cw-monitoring-framework/ApacheInstances",
+      },
+      "Metric": Object {
+        "MetricsEndpoint": "https://metrics.awssolutionsbuilder.com/generic",
+        "SendAnonymousMetric": "Yes",
+      },
+      "Solution": Object {
+        "SolutionId": "SO0158Ap",
+        "SolutionVersion": "%%VERSION%%",
+      },
+    },
+  },
+  "Metadata": Object {
+    "AWS::CloudFormation::Interface": Object {
+      "ParameterGroups": Array [
+        Object {
+          "Label": Object {
+            "default": "Apache Monitoring Configuration",
+          },
+          "Parameters": Array [
+            "TagSchema",
+            "DashboardName",
+          ],
+        },
+      ],
+      "ParameterLabels": Object {
+        "DashboardName": Object {
+          "default": "Dashboard name for Apache workload",
+        },
+        "TagSchema": Object {
+          "default": "Tag Schema for Apache instances",
+        },
+      },
+    },
+  },
+  "Outputs": Object {
+    "ApcheDashboard": Object {
+      "Description": "CloudWatch Dashboard for Apache workload",
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            Object {
+              "Ref": "DashboardName",
+            },
+            "-",
+            Object {
+              "Ref": "AWS::Region",
+            },
+          ],
+        ],
+      },
+    },
+    "UUID": Object {
+      "Description": "UUID for deployment",
+      "Value": Object {
+        "Fn::GetAtt": Array [
+          "CreateUUID",
+          "UUID",
+        ],
+      },
+    },
+  },
+  "Parameters": Object {
+    "DashboardName": Object {
+      "Default": "ApacheDashboard",
+      "Description": "Region will be appended to the name. for eg. ApacheDashboard-us-east-1",
+      "Type": "String",
+    },
+    "TagSchema": Object {
+      "Description": "EC2 tag schema to identify apache instances",
+      "Type": "String",
+    },
+    "referencetoParentStackAssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3Bucket18F6339FRef": Object {
+      "Type": "String",
+    },
+    "referencetoParentStackAssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3VersionKey0A2CD09ERef": Object {
+      "Type": "String",
+    },
+    "referencetoParentStackAssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3BucketC8B6BD1DRef": Object {
+      "Type": "String",
+    },
+    "referencetoParentStackAssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3VersionKey4E160C34Ref": Object {
+      "Type": "String",
+    },
+    "referencetoParentStackAssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3BucketC725A2F3Ref": Object {
+      "Type": "String",
+    },
+    "referencetoParentStackAssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3VersionKey5881934CRef": Object {
+      "Type": "String",
+    },
+    "referencetoParentStackAssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3Bucket1CE10BB7Ref": Object {
+      "Type": "String",
+    },
+    "referencetoParentStackAssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3VersionKeyCAE6FA66Ref": Object {
+      "Type": "String",
+    },
+  },
+  "Resources": Object {
+    "ApacheSSMC9739C5A": Object {
+      "Properties": Object {
+        "Name": "/cw-monitoring-framework/ApacheInstances",
+        "Tier": "Advanced",
+        "Type": "StringList",
+        "Value": "NOP",
+      },
+      "Type": "AWS::SSM::Parameter",
+    },
+    "CreateUUID": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "helperProviderframeworkonEvent35A99430",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::CreateUUID",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "DashboardHandler5DC2C81F": Object {
+      "DependsOn": Array [
+        "DashboardHandlerServiceRoleDefaultPolicy91ADC4AD",
+        "DashboardHandlerServiceRoleB33263F6",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "CloudWatch logs write permissions added with managed role AWSLambdaBasicExecutionRole",
+            },
+            Object {
+              "id": "W89",
+              "reason": "Not valid use case to deploy Lambda in VPC",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Not valid use case for ReservedConcurrentExecutions",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "referencetoParentStackAssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3BucketC8B6BD1DRef",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "referencetoParentStackAssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3VersionKey4E160C34Ref",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "referencetoParentStackAssetParameters11ed7cbcbb4ffb8d6ceaf28d379c5b48dd4ba3b3f2a413979934ffd07a259aa1S3VersionKey4E160C34Ref",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "DeadLetterConfig": Object {
+          "TargetArn": Object {
+            "Fn::GetAtt": Array [
+              "dlq09C78ACC",
+              "Arn",
+            ],
+          },
+        },
+        "Description": "DO NOT DELETE - CloudWatch Monitoring Framework - apache dashboard handler function",
+        "Environment": Object {
+          "Variables": Object {
+            "ACCESS_LOG_GROUP": Object {
+              "Fn::FindInMap": Array [
+                "StackMap",
+                "Apache",
+                "AccessLog",
+              ],
+            },
+            "CUSTOM_SDK_USER_AGENT": "AwsSolution/SO0158/%%VERSION%%",
+            "DASHBOARD_NAME": Object {
+              "Fn::Join": Array [
+                "",
+                Array [
+                  Object {
+                    "Ref": "DashboardName",
+                  },
+                  "-",
+                  Object {
+                    "Ref": "AWS::Region",
+                  },
+                ],
+              ],
+            },
+            "LOG_LEVEL": "info",
+            "METRICS_ENDPOINT": Object {
+              "Fn::FindInMap": Array [
+                "StackMap",
+                "Metric",
+                "MetricsEndpoint",
+              ],
+            },
+            "SEND_METRIC": Object {
+              "Fn::FindInMap": Array [
+                "StackMap",
+                "Metric",
+                "SendAnonymousMetric",
+              ],
+            },
+            "SSM_PARAMETER": Object {
+              "Ref": "ApacheSSMC9739C5A",
+            },
+            "START_TIME": "-PT12H",
+            "TAG_SCHEMA": Object {
+              "Ref": "TagSchema",
+            },
+            "WORKLOAD": "Apache",
+          },
+        },
+        "Handler": "index.handler",
+        "MemorySize": 512,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "DashboardHandlerServiceRoleB33263F6",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "DashboardHandlerServiceRoleB33263F6": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "DashboardHandlerServiceRoleDefaultPolicy91ADC4AD": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "dlq09C78ACC",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "DashboardHandlerServiceRoleDefaultPolicy91ADC4AD",
+        "Roles": Array [
+          Object {
+            "Ref": "DashboardHandlerServiceRoleB33263F6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "DeleteDeployment": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "DashboardName": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              Object {
+                "Ref": "DashboardName",
+              },
+              "-",
+              Object {
+                "Ref": "AWS::Region",
+              },
+            ],
+          ],
+        },
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "helperProviderframeworkonEvent35A99430",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::DeleteDeployment",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "EC2TagRuleApache900B2D78": Object {
+      "Properties": Object {
+        "Name": "Apache-EC2TagRule",
+        "ScheduleExpression": "rate(5 minutes)",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "TagHandlerE89DBFCE",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "EC2TagRuleApacheAllowEventRuleParentStackApacheTagHandler150015066B0C8646": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "TagHandlerE89DBFCE",
+            "Arn",
+          ],
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "EC2TagRuleApache900B2D78",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "HelperD4411AF3": Object {
+      "DependsOn": Array [
+        "HelperServiceRole21B0A5E5",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "CloudWatch logs write permissions added with managed role AWSLambdaBasicExecutionRole",
+            },
+            Object {
+              "id": "W89",
+              "reason": "Not valid use case to deploy Lambda in VPC",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Not valid use case for ReservedConcurrentExecutions",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "referencetoParentStackAssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3Bucket18F6339FRef",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "referencetoParentStackAssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3VersionKey0A2CD09ERef",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "referencetoParentStackAssetParameters0e0e5ce1e1c65e9941d6466f87c47400bbe22b58fcae4a167d1c18f9468ff1fdS3VersionKey0A2CD09ERef",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Description": "DO NOT DELETE - CloudWatch Monitoring Framework - helper function",
+        "Environment": Object {
+          "Variables": Object {
+            "CUSTOM_SDK_USER_AGENT": "AwsSolution/SO0158/%%VERSION%%",
+            "LOG_LEVEL": "info",
+            "METRICS_ENDPOINT": Object {
+              "Fn::FindInMap": Array [
+                "StackMap",
+                "Metric",
+                "MetricsEndpoint",
+              ],
+            },
+            "SEND_METRIC": Object {
+              "Fn::FindInMap": Array [
+                "StackMap",
+                "Metric",
+                "SendAnonymousMetric",
+              ],
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "MemorySize": 512,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "HelperServiceRole21B0A5E5",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "HelperServiceRole21B0A5E5": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "LaunchData": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "helperProviderframeworkonEvent35A99430",
+            "Arn",
+          ],
+        },
+        "SolutionId": Object {
+          "Fn::FindInMap": Array [
+            "StackMap",
+            "Solution",
+            "SolutionId",
+          ],
+        },
+        "SolutionUuid": Object {
+          "Fn::GetAtt": Array [
+            "CreateUUID",
+            "UUID",
+          ],
+        },
+        "SolutionVersion": Object {
+          "Fn::FindInMap": Array [
+            "StackMap",
+            "Solution",
+            "SolutionVersion",
+          ],
+        },
+        "Stack": "ApacheStack",
+      },
+      "Type": "Custom::LaunchData",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "SSMRuleApacheAllowEventRuleParentStackApacheDashboardHandlerD05FECEDBCDC5469": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "DashboardHandler5DC2C81F",
+            "Arn",
+          ],
+        },
+        "Principal": "events.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::GetAtt": Array [
+            "SSMRuleApacheCCCC0A68",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "SSMRuleApacheCCCC0A68": Object {
+      "Properties": Object {
+        "EventPattern": Object {
+          "detail": Object {
+            "name": Array [
+              "/cw-monitoring-framework/ApacheInstances",
+            ],
+          },
+          "detail-type": Array [
+            "Parameter Store Change",
+          ],
+          "source": Array [
+            "aws.ssm",
+          ],
+        },
+        "Name": "Apache-SSMRule",
+        "State": "ENABLED",
+        "Targets": Array [
+          Object {
+            "Arn": Object {
+              "Fn::GetAtt": Array [
+                "DashboardHandler5DC2C81F",
+                "Arn",
+              ],
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "TagHandlerE89DBFCE": Object {
+      "DependsOn": Array [
+        "TagHandlerServiceRoleDefaultPolicy7F6375CB",
+        "TagHandlerServiceRole6954614A",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "CloudWatch logs write permissions added with managed role AWSLambdaBasicExecutionRole",
+            },
+            Object {
+              "id": "W89",
+              "reason": "Not valid use case to deploy Lambda in VPC",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Not valid use case for ReservedConcurrentExecutions",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "referencetoParentStackAssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3BucketC725A2F3Ref",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "referencetoParentStackAssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3VersionKey5881934CRef",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "referencetoParentStackAssetParameters494b517286c18edb2269ee45e99eb3bbe46d0dc1cbe3f51bfc887c4f57a0da23S3VersionKey5881934CRef",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "DeadLetterConfig": Object {
+          "TargetArn": Object {
+            "Fn::GetAtt": Array [
+              "dlq09C78ACC",
+              "Arn",
+            ],
+          },
+        },
+        "Description": "DO NOT DELETE - CloudWatch Monitoring Framework - apache tag handler function",
+        "Environment": Object {
+          "Variables": Object {
+            "CUSTOM_SDK_USER_AGENT": "AwsSolution/SO0158/%%VERSION%%",
+            "LOG_LEVEL": "info",
+            "METRICS_ENDPOINT": Object {
+              "Fn::FindInMap": Array [
+                "StackMap",
+                "Metric",
+                "MetricsEndpoint",
+              ],
+            },
+            "SEND_METRIC": Object {
+              "Fn::FindInMap": Array [
+                "StackMap",
+                "Metric",
+                "SendAnonymousMetric",
+              ],
+            },
+            "SSM_PARAMETER": Object {
+              "Ref": "ApacheSSMC9739C5A",
+            },
+            "TAG_SCHEMA": Object {
+              "Ref": "TagSchema",
+            },
+          },
+        },
+        "Handler": "index.handler",
+        "MemorySize": 512,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "TagHandlerServiceRole6954614A",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs12.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "TagHandlerServiceRole6954614A": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "TagHandlerServiceRoleDefaultPolicy7F6375CB": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sqs:SendMessage",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "dlq09C78ACC",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "TagHandlerServiceRoleDefaultPolicy7F6375CB",
+        "Roles": Array [
+          Object {
+            "Ref": "TagHandlerServiceRole6954614A",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "dashboardHandlerPolicy3B0479F2": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "ssm:GetParameter",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ssm:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter",
+                    Object {
+                      "Ref": "ApacheSSMC9739C5A",
+                    },
+                  ],
+                ],
+              },
+              "Sid": "SSMRead",
+            },
+            Object {
+              "Action": Array [
+                "cloudwatch:PutDashboard",
+                "cloudwatch:DeleteDashboards",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":cloudwatch::",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":dashboard/",
+                    Object {
+                      "Ref": "DashboardName",
+                    },
+                    "-",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                  ],
+                ],
+              },
+              "Sid": "CWWrite",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "dashboardHandlerPolicy3B0479F2",
+        "Roles": Array [
+          Object {
+            "Ref": "DashboardHandlerServiceRoleB33263F6",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "dlq09C78ACC": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "KmsMasterKeyId": "alias/aws/sqs",
+      },
+      "Type": "AWS::SQS::Queue",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "helperPolicy08B4DDB1": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "cloudwatch:DeleteDashboards",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":cloudwatch::",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":dashboard/",
+                    Object {
+                      "Ref": "DashboardName",
+                    },
+                    "-",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                  ],
+                ],
+              },
+              "Sid": "CWWrite",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "helperPolicy08B4DDB1",
+        "Roles": Array [
+          Object {
+            "Ref": "HelperServiceRole21B0A5E5",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "helperProviderframeworkonEvent35A99430": Object {
+      "DependsOn": Array [
+        "helperProviderframeworkonEventServiceRoleDefaultPolicy0DFC22B9",
+        "helperProviderframeworkonEventServiceRoleFA06E8E2",
+      ],
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W58",
+              "reason": "CloudWatch logs write permissions added with managed role AWSLambdaBasicExecutionRole",
+            },
+            Object {
+              "id": "W89",
+              "reason": "Not valid use case to deploy Lambda in VPC",
+            },
+            Object {
+              "id": "W92",
+              "reason": "Not valid use case for ReservedConcurrentExecutions",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "referencetoParentStackAssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3Bucket1CE10BB7Ref",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "referencetoParentStackAssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3VersionKeyCAE6FA66Ref",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "referencetoParentStackAssetParametersc691172cdeefa2c91b5a2907f9d81118e47597634943344795f1a844192dd49cS3VersionKeyCAE6FA66Ref",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Description": "AWS CDK resource provider framework - onEvent (ParentStack/Apache/helperProvider)",
+        "Environment": Object {
+          "Variables": Object {
+            "USER_ON_EVENT_FUNCTION_ARN": Object {
+              "Fn::GetAtt": Array [
+                "HelperD4411AF3",
+                "Arn",
+              ],
+            },
+          },
+        },
+        "Handler": "framework.onEvent",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "helperProviderframeworkonEventServiceRoleFA06E8E2",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "helperProviderframeworkonEventServiceRoleDefaultPolicy0DFC22B9": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "lambda:InvokeFunction",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "HelperD4411AF3",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "helperProviderframeworkonEventServiceRoleDefaultPolicy0DFC22B9",
+        "Roles": Array [
+          Object {
+            "Ref": "helperProviderframeworkonEventServiceRoleFA06E8E2",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "helperProviderframeworkonEventServiceRoleFA06E8E2": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "tagHandlerPolicy01DEF55B": Object {
+      "Metadata": Object {
+        "cfn_nag": Object {
+          "rules_to_suppress": Array [
+            Object {
+              "id": "W12",
+              "reason": "* is required for ec2:DescribeTags, as it does not support resource level permissions",
+            },
+          ],
+        },
+      },
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "ssm:PutParameter",
+                "ssm:GetParameter",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ssm:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":parameter",
+                    Object {
+                      "Ref": "ApacheSSMC9739C5A",
+                    },
+                  ],
+                ],
+              },
+              "Sid": "SSMWrite",
+            },
+            Object {
+              "Action": "ec2:DescribeTags",
+              "Effect": "Allow",
+              "Resource": "*",
+              "Sid": "EC2Describe",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "tagHandlerPolicy01DEF55B",
+        "Roles": Array [
+          Object {
+            "Ref": "TagHandlerServiceRole6954614A",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+  },
+}
+`;

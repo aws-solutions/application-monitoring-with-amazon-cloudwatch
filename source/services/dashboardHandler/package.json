@@ -1,0 +1,40 @@
+{
+  "name": "dashboard-handler",
+  "version": "1.0.0",
+  "description": "microservice to handle dashboard CRUD operations",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npm i",
+    "test": "./node_modules/jest/bin/jest.js ./__tests__",
+    "coverage": "npm i && LOG_LEVEL=debug ./node_modules/jest/bin/jest.js --coverage ./__tests__",
+    "build:clean": "rm -rf ./node_modules && rm -rf ./dist && rm -f ./package-lock.json",
+    "build:ts": "./node_modules/typescript/bin/tsc --project ./tsconfig.json",
+    "build:install": "npm i",
+    "watch": "tsc -w",
+    "build:copy": "cp -r ./node_modules ./dist/node_modules && rm -rf ./dist/__tests__",
+    "build:zip": "cd ./dist && zip -rq dashboardHandler.zip .",
+    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm prune --production && npm run build:copy && npm run build:zip"
+  },
+  "author": "aws-solutions@",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "aws-sdk": "^2.840.0",
+    "got": "^11.8.1",
+    "moment": "^2.29.1",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.10",
+    "@types/node": "10.17.27",
+    "jest": "^26.4.2",
+    "jest-sonar-reporter": "^2.0.0",
+    "ts-jest": "^26.2.0",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.1.3"
+  },
+  "jestSonar": {
+    "reportPath": "coverage",
+    "reportFile": "dashboardHandler-test-report.xml",
+    "indent": 4
+  }
+}
