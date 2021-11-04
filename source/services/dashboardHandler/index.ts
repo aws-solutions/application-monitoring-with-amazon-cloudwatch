@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,29 +11,24 @@
  *  and limitations under the License.
  */
 
-import { logger } from "./lib/utils/logger";
-import { Apache } from "./lib/apache/ApacheHelper";
+import { logger } from "logger";
+import { Workload } from "./lib/CWWidgetFactory";
 
-exports.handler = async (event: any, _: any) => {
+exports.handler = async (event: unknown) => {
   // log the event
   logger.debug({
     label: "dashboardHandler",
     message: `received event: ${JSON.stringify(event)}`,
   });
 
-  /**
-   * instantiating workload related class
-   * this can be extended for different workloads
-   */
-  if (process.env.WORKLOAD === "Apache") {
-    const apache = new Apache();
-    await apache.putDashboard(
-      process.env.START_TIME!,
-      process.env.DASHBOARD_NAME!
-    );
-  }
+  const wld = new Workload();
+  await wld.putDashboard(
+    process.env.START_TIME as string,
+    process.env.DASHBOARD_NAME as string
+  );
+
   logger.info({
     label: "dashboardHandler",
-    message: `Apache dashboard:${process.env.DASHBOARD_NAME!} updated`,
+    message: `Dashboard:${process.env.DASHBOARD_NAME as string} updated`,
   });
 };

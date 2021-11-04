@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -11,11 +11,11 @@
  *  and limitations under the License.
  */
 
-import { logger } from "./lib/utils/logger";
+import { logger } from "logger";
 import { SSMHelper } from "./lib/SSMHelper";
 import { EC2Helper } from "./lib/EC2Helper";
 
-exports.handler = async (event: any, _: any) => {
+exports.handler = async (event: unknown) => {
   // log the event
   logger.debug({
     label: "tagHandler",
@@ -24,7 +24,7 @@ exports.handler = async (event: any, _: any) => {
   try {
     // validate tag
     if (!EC2Helper.isTagValid(process.env.TAG_SCHEMA as string))
-      throw new Error("invalid tag for EC2 instances");
+      throw new Error("invalid tag schema for EC2 instances");
 
     // get instances based on tag values
     const tag = JSON.parse(process.env.TAG_SCHEMA as string);
@@ -58,8 +58,8 @@ exports.handler = async (event: any, _: any) => {
   } catch (e) {
     logger.error({
       label: "handler",
-      message: `${e.message}`,
+      message: `${(e as Error).message}`,
     });
-    throw new Error(e.message);
+    throw new Error((e as Error).message);
   }
 };

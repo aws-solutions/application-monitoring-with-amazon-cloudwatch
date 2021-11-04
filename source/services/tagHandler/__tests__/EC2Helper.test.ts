@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -58,7 +58,7 @@ describe("==EC2Helper Tests==", () => {
         const list = ["i-00001111", "i-11112222", "i-22223333", "i-33334444"];
         expect(data).toEqual(expect.arrayContaining(list));
       } catch (e) {
-        console.log(`negative test: ${e.message}`);
+        console.log(`negative test: ${e}`);
       }
     });
 
@@ -75,7 +75,7 @@ describe("==EC2Helper Tests==", () => {
         const list = ["i-22223333", "i-33334444"];
         expect(data).toEqual(expect.arrayContaining(list));
       } catch (e) {
-        console.log(`negative test: ${e.message}`);
+        console.log(`negative test: ${e}`);
       }
     });
 
@@ -91,7 +91,7 @@ describe("==EC2Helper Tests==", () => {
         const data = await EC2Helper.getInstances("key", "value");
         expect(data).toEqual(expect.arrayContaining([]));
       } catch (e) {
-        console.log(`negative test: ${e.message}`);
+        console.log(`negative test: ${e as Error}`);
       }
     });
 
@@ -107,7 +107,7 @@ describe("==EC2Helper Tests==", () => {
         const data = await EC2Helper.getInstances("key", "value");
         expect(data).toEqual(expect.arrayContaining([]));
       } catch (e) {
-        console.log(`negative test: ${e.message}`);
+        console.log(`negative test: ${e}`);
       }
     });
 
@@ -122,7 +122,9 @@ describe("==EC2Helper Tests==", () => {
       try {
         await EC2Helper.getInstances("key", "value");
       } catch (e) {
-        expect(e.message).toEqual("error in describing tag for instances");
+        expect((e as Error).message).toEqual(
+          "error in describing tag for instances"
+        );
       }
     });
   });
