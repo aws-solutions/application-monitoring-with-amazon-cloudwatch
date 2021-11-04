@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -13,6 +13,7 @@
 
 import "jest";
 import { SSMHelper } from "../lib/SSMHelper";
+import { APIError } from "error";
 
 const mockSSM = jest.fn();
 
@@ -51,7 +52,7 @@ describe("==SSMHelper Tests==", () => {
         const data = await SSMHelper.getParameter("name");
         expect(data).toEqual(expect.arrayContaining(mockSSMSL));
       } catch (e) {
-        console.log(`negative test: ${e.message}`);
+        console.log(`negative test: ${e as Error}`);
       }
     });
 
@@ -73,7 +74,7 @@ describe("==SSMHelper Tests==", () => {
       try {
         await SSMHelper.getParameter("name");
       } catch (e) {
-        expect(e.message).toEqual("parameter not found");
+        expect((e as ReferenceError).message).toEqual("parameter not found");
       }
     });
 
@@ -88,7 +89,7 @@ describe("==SSMHelper Tests==", () => {
       try {
         await SSMHelper.getParameter("");
       } catch (e) {
-        expect(e.message).toEqual("error fetching SSM parameter");
+        expect((e as APIError).message).toEqual("error fetching SSM parameter");
       }
     });
   });
@@ -109,7 +110,7 @@ describe("==SSMHelper Tests==", () => {
         await SSMHelper.putParameter("name", ["value1", "value2"]); // testing with list
         await SSMHelper.putParameter("name", []); // testing with empty value
       } catch (e) {
-        console.log(`negative test: ${e.message}`);
+        console.log(`negative test: ${e as Error}`);
       }
     });
     test("[TDD] failed api call", async () => {
@@ -123,7 +124,7 @@ describe("==SSMHelper Tests==", () => {
       try {
         await SSMHelper.putParameter("name", ["value"]);
       } catch (e) {
-        expect(e.message).toEqual("error putting SSM parameter");
+        expect((e as APIError).message).toEqual("error putting SSM parameter");
       }
     });
   });

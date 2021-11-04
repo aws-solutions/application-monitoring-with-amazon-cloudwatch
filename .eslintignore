@@ -4,4 +4,6 @@
 dist
 # don't lint nyc coverage output
 coverage
-
+# don't lint cdk outputs
+cdk.out
+staging

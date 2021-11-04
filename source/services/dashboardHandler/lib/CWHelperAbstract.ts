@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,7 +17,7 @@
  */
 
 import { CloudWatch } from "aws-sdk";
-import { logger } from "./utils/logger";
+import { logger } from "logger";
 import { SSMHelper } from "./SSMHelper";
 
 import {
@@ -45,20 +45,23 @@ export abstract class CWHelper {
    */
   async putDashboard(startTime: string, dashboardName: string): Promise<void> {
     let instances = [];
-    const tag = process.env.TAG_SCHEMA!;
+    const tag = process.env.TAG_SCHEMA as string;
+    const workload = process.env.WORKLOAD as string;
     try {
       // validate tag
       if (!this.isTagValid(tag)) throw new Error("invalid tag");
 
       // validate instances
-      instances = await SSMHelper.getParameter(process.env.SSM_PARAMETER!);
+      instances = await SSMHelper.getParameter(
+        process.env.SSM_PARAMETER as string
+      );
       if (instances.length === 0) {
         logger.debug({
           label: "CWHelper/putDashboard",
           message: "no instances found",
         });
         // if no instances found, delete dashboard
-        await this.deleteDashboard(dashboardName).catch((_) => {
+        await this.deleteDashboard(dashboardName).catch(() => {
           // do nothing
         });
         throw new Error("no instances found");
@@ -67,7 +70,7 @@ export abstract class CWHelper {
       // generate widgets
       const dashboard: IDashboard = { start: "", widgets: [] };
       dashboard.start = startTime;
-      dashboard.widgets = this.factoryMethod().widgets(instances, tag);
+      dashboard.widgets = this.factoryMethod().get(workload, instances, tag);
 
       // put dashboard
       const cw = new CloudWatch({
@@ -163,7 +166,8 @@ export abstract class CWHelper {
  * @description common interface for workload classes
  */
 export interface WidgetFactory {
-  widgets(
+  get(
+    workload: string,
     instanceIds: string[],
     tag: string
   ): (ILogWidget | IExplorerWidget | IMetricWidget)[];

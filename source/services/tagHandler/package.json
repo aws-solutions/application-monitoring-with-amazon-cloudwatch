@@ -4,24 +4,29 @@
   "description": "microservice to handle ec2 tagging events",
   "main": "index.js",
   "scripts": {
-    "pretest": "npm i",
+    "preinstall:logger": "cd ../utils/logger && npm ci",
+    "preinstall:error": "cd ../utils/error && npm ci",
+    "preinstall": "npm run preinstall:logger && npm run preinstall:error",
+    "pretest": "npm run preinstall && npm ci",
     "test": "./node_modules/jest/bin/jest.js ./__tests__",
-    "coverage": "npm i && LOG_LEVEL=debug ./node_modules/jest/bin/jest.js --coverage ./__tests__",
-    "build:clean": "rm -rf ./node_modules && rm -rf ./dist && rm -f ./package-lock.json",
-    "build:ts": "./node_modules/typescript/bin/tsc --project ./tsconfig.json",
-    "build:install": "npm i",
+    "coverage": "npm run pretest && LOG_LEVEL=debug ./node_modules/jest/bin/jest.js --coverage ./__tests__",
     "watch": "tsc -w",
-    "build:copy": "cp -r ./node_modules ./dist/node_modules && rm -rf ./dist/__tests__",
-    "build:zip": "cd ./dist && zip -rq tagHandler.zip .",
-    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm prune --production && npm run build:copy && npm run build:zip"
+    "build:clean": "rm -rf ./node_modules && rm -rf ./dist",
+    "build:install": "npm run preinstall && npm ci",
+    "build:ts": "./node_modules/typescript/bin/tsc --project ./tsconfig.json",
+    "build:copy": "cp -RL ./node_modules ./dist/node_modules && rm -rf ./dist/__tests__",
+    "build:zip": "cd ./dist && zip -r tagHandler.zip .",
+    "prune:logger": "cd ./node_modules/logger && npm prune --production",
+    "prune:error": "cd ./node_modules/error && npm prune --production",
+    "build:prune": "npm run prune:logger && npm run prune:error",
+    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm run build:prune && npm prune --production && npm run build:copy && npm run build:zip"
   },
   "author": "aws-solutions@",
   "license": "Apache-2.0",
   "dependencies": {
     "aws-sdk": "^2.840.0",
-    "got": "^11.8.1",
-    "moment": "^2.29.1",
-    "winston": "^3.3.3"
+    "logger": "file:../utils/logger",
+    "error": "file:../utils/error"
   },
   "devDependencies": {
     "@types/jest": "^26.0.10",
