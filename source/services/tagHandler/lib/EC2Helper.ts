@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -17,7 +17,7 @@
  */
 
 import { EC2 } from "aws-sdk";
-import { logger } from "./utils/logger";
+import { logger } from "logger";
 import { config } from "./exports";
 /**
  * @description helper class for tag validation & describing EC2 instances
@@ -114,10 +114,7 @@ export class EC2Helper {
    * @param {string[]} a2
    */
   static compareArrays(a1: string[], a2: string[]): boolean {
-    interface map {
-      [index: string]: number;
-    }
-    const superSet: map = {};
+    const superSet: { [key: string]: number } = {};
     for (const i of a1) {
       superSet[i] = 1;
     }
@@ -143,7 +140,7 @@ export class EC2Helper {
    */
   static isTagValid(tagSchema: string): boolean {
     logger.info({
-      label: "PolicyManagaer/isTagValid",
+      label: "PolicyManager/isTagValid",
       message: `checking if tag is valid`,
     });
 
@@ -169,7 +166,7 @@ export class EC2Helper {
     } catch (e) {
       logger.error({
         label: "EC2Helper/isTagValid",
-        message: `${e.message}`,
+        message: `${(e as Error).message}`,
       });
       return false;
     }

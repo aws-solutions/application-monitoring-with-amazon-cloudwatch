@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -19,14 +19,12 @@
 
 import {
   Stack,
-  CfnResource,
   NestedStack,
   NestedStackProps,
   CfnMapping,
   CfnOutput,
 } from "@aws-cdk/core";
 import {
-  Vpc,
   Instance,
   InstanceType,
   InitFile,
@@ -37,17 +35,11 @@ import {
   AmazonLinuxVirt,
   AmazonLinuxGeneration,
   AmazonLinuxCpuType,
-  SecurityGroup,
-  Peer,
-  Port,
   InitPackage,
-  SubnetType,
   InitCommand,
 } from "@aws-cdk/aws-ec2";
-import { ILogGroup, LogGroup } from "@aws-cdk/aws-logs";
-import { Effect, Policy, PolicyStatement } from "@aws-cdk/aws-iam";
-import { manifest } from "../exports";
-import { apache_manifest } from "./apache_exports";
+import { DemoConstruct } from "../demo.infra";
+import { manifest, Workload } from "../exports";
 
 /**
  * @class
@@ -63,7 +55,7 @@ export class ApacheDemo extends NestedStack {
     //=============================================================================================
     // Metadata
     //=============================================================================================
-    this.templateOptions.description = `(${manifest.solutionId}ApD) - The AWS CloudFormation template for deployment of the ${manifest.solutionName} Apache workload demo resource. Version ${manifest.solutionVersion}`;
+    this.templateOptions.description = `(${manifest.solutionId}-Demo) - The AWS CloudFormation template for deployment of the ${manifest.solutionName} Apache workload demo resource. Version ${manifest.solutionVersion}`;
     this.templateOptions.templateFormatVersion = manifest.templateVersion;
 
     //=============================================================================================
@@ -72,9 +64,9 @@ export class ApacheDemo extends NestedStack {
     const map = new CfnMapping(this, "StackMap", {
       mapping: {
         Apache: {
-          AccessLog: apache_manifest.logGroups.accesslog, // access log for apache instances, change as needed
+          AccessLog: Workload.Apache.AccessLog, // access log for apache instances, change as needed
           InfraConfig:
-            "https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/apache.config/infra.json", // base infra config file
+            "https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/linux_cw_infra.json", // base infra config file
           ApacheConfig:
             "https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/apache.config/apache.json", // apache config file
           httpdConfig:
@@ -89,68 +81,10 @@ export class ApacheDemo extends NestedStack {
     // Resources
     //=============================================================================================
     /**
-     * @description demo vpc with 1 public subnet
-     * @type {Vpc}
+     * @description creating demo infrastructure
+     * @type {DemoConstruct}
      */
-    const demoVPC: Vpc = new Vpc(this, "DemoVPC", {
-      cidr: "10.0.1.0/26",
-      natGateways: 0,
-      vpnGateway: false,
-      subnetConfiguration: [
-        {
-          cidrMask: 28,
-          name: "PublicSubnet",
-          subnetType: SubnetType.PUBLIC,
-        },
-      ],
-    });
-    demoVPC.publicSubnets.forEach((subnet) => {
-      const hs = subnet.node.defaultChild as CfnResource;
-      hs.cfnOptions.metadata = {
-        cfn_nag: {
-          rules_to_suppress: [
-            {
-              id: "W33",
-              reason: "Need public IP for demo web server ",
-            },
-          ],
-        },
-      };
-    });
-
-    /**
-     * @description security group for web server
-     * @type {SecurityGroup}
-     */
-    const demoSg: SecurityGroup = new SecurityGroup(this, "DemoSG", {
-      vpc: demoVPC,
-      allowAllOutbound: false,
-    });
-    demoSg.addIngressRule(Peer.anyIpv4(), Port.tcp(80), "allow HTTP traffic");
-    (demoSg.node.defaultChild as CfnResource).cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: "W40",
-            reason: "Demo resource",
-          },
-          {
-            id: "W5",
-            reason: "Demo resource",
-          },
-          {
-            id: "W9",
-            reason: "Demo resource",
-          },
-          {
-            id: "W2",
-            reason: "Demo resource",
-          },
-        ],
-      },
-    };
-    demoSg.addEgressRule(Peer.anyIpv4(), Port.tcp(80), "allow outbound http");
-    demoSg.addEgressRule(Peer.anyIpv4(), Port.tcp(443), "allow outbound https");
+    const demoInfra: DemoConstruct = new DemoConstruct(this, "ApacheDemoInfra");
 
     const handle: InitServiceRestartHandle = new InitServiceRestartHandle();
 
@@ -195,7 +129,7 @@ export class ApacheDemo extends NestedStack {
      * @type {Instance}
      */
     const demoEC2: Instance = new Instance(this, "ApacheDemoEC2", {
-      vpc: demoVPC,
+      vpc: demoInfra.demoVPC,
       instanceType: new InstanceType("t3.micro"),
       machineImage: MachineImage.latestAmazonLinux({
         virtualization: AmazonLinuxVirt.HVM,
@@ -203,7 +137,7 @@ export class ApacheDemo extends NestedStack {
         cpuType: AmazonLinuxCpuType.X86_64,
       }),
       init: init,
-      securityGroup: demoSg,
+      securityGroup: demoInfra.demoSecurityGroup,
     });
 
     demoEC2.addUserData(
@@ -213,51 +147,7 @@ export class ApacheDemo extends NestedStack {
       "curl 127.0.0.1"
     );
 
-    const po = new Policy(this, "DemoInstancePolicy");
-    const po1 = new PolicyStatement({
-      effect: Effect.ALLOW,
-      sid: "CWWrite",
-      actions: [
-        "cloudwatch:PutMetricData",
-        "ec2:DescribeVolumes",
-        "ec2:DescribeTags",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams",
-        "logs:DescribeLogGroups",
-        "logs:CreateLogStream",
-        "logs:CreateLogGroup",
-      ],
-      resources: ["*"],
-    });
-    po.addStatements(po1);
-    demoEC2.role.attachInlinePolicy(po);
-
-    //=============================================================================================
-    // cfn_nag suppress rules
-    //=============================================================================================
-    const _dVpc = demoVPC.node.findChild("Resource") as CfnResource;
-    _dVpc.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: "W60",
-            reason: "demo resource, no flow log enabled",
-          },
-        ],
-      },
-    };
-
-    const _po = po.node.findChild("Resource") as CfnResource;
-    _po.cfnOptions.metadata = {
-      cfn_nag: {
-        rules_to_suppress: [
-          {
-            id: "W12",
-            reason: "* is required for creating log groups and put metrics",
-          },
-        ],
-      },
-    };
+    demoEC2.role.attachInlinePolicy(demoInfra.demoInstancePolicy);
 
     //=============================================================================================
     // Output

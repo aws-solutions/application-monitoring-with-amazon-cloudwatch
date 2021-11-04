@@ -1,5 +1,5 @@
 /**
- *  Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
  *  with the License. A copy of the License is located at
@@ -16,8 +16,8 @@
  * @author @aws-solutions
  */
 
-import { logger } from "./utils/logger";
-import { APIError } from "./utils/error";
+import { logger } from "logger";
+import { APIError } from "error";
 import { SSM } from "aws-sdk";
 import { config } from "./exports";
 

@@ -2,6 +2,7 @@
 !jest.config.js
 !.eslintrc.js
 *.d.ts
+tmp
 
 # Generated ouputs
 dist
@@ -12,10 +13,12 @@ npm-debug.log
 global-s3-assets
 regional-s3-assets
 eslint_report.json
+staging
+__snapshots__
+source/services/utils/*/index.js
 
 # Node dependencies
 node_modules
-package-lock.json
 
 # CDK Misc files
 # cdk.context.json

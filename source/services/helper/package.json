@@ -4,24 +4,30 @@
   "description": "helper function for FMS solution",
   "main": "index.js",
   "scripts": {
-    "pretest": "npm i",
+    "preinstall:logger": "cd ../utils/logger && npm ci",
+    "preinstall:metrics": "cd ../utils/metrics && npm ci",
+    "preinstall": "npm run preinstall:logger && npm run preinstall:metrics",
+    "pretest": "npm run preinstall && npm ci",
     "test": "echo \"nothing to do\"",
-    "build:clean": "rm -rf ./node_modules && rm -rf ./dist && rm -f ./package-lock.json",
-    "build:copy": "cp -r ./node_modules ./dist/node_modules",
-    "build:ts": "./node_modules/typescript/bin/tsc --project ./tsconfig.json",
-    "build:install": "npm i",
+    "coverage": "npm run pretest && LOG_LEVEL=debug ./node_modules/jest/bin/jest.js --coverage ./__tests__",
     "watch": "tsc -w",
-    "build:zip": "cd ./dist && zip -rq helperFunction.zip .",
-    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm prune --production && npm run build:copy && npm run build:zip"
+    "build:clean": "rm -rf ./node_modules && rm -rf ./dist",
+    "build:install": "npm run preinstall && npm ci",
+    "build:ts": "./node_modules/typescript/bin/tsc --project ./tsconfig.json",
+    "prune:logger": "cd ./node_modules/logger && npm prune --production",
+    "prune:metrics": "cd ./node_modules/metrics && npm prune --production",
+    "build:prune": "npm run prune:logger && npm run prune:metrics",
+    "build:copy": "cp -RL ./node_modules ./dist/node_modules",
+    "build:zip": "cd ./dist && zip -r helperFunction.zip .",
+    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm run build:prune && npm prune --production && npm run build:copy && npm run build:zip"
   },
   "author": "aws-solutions",
   "license": "Apache-2.0",
   "dependencies": {
     "aws-sdk": "^2.714.0",
-    "got": "^11.5.1",
-    "moment": "^2.27.0",
     "uuid": "^8.2.0",
-    "winston": "^3.3.3"
+    "logger": "file:../utils/logger",
+    "metrics": "file:../utils/metrics"
   },
   "devDependencies": {
     "@types/uuid": "^8.0.0",
