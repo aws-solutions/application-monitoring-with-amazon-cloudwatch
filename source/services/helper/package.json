@@ -19,7 +19,7 @@
     "build:prune": "npm run prune:logger && npm run prune:metrics",
     "build:copy": "cp -RL ./node_modules ./dist/node_modules",
     "build:zip": "cd ./dist && zip -r helperFunction.zip .",
-    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm run build:prune && npm prune --production && npm run build:copy && npm run build:zip"
+    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm prune --production && npm run build:prune && npm run build:copy && npm run build:zip"
   },
   "author": "aws-solutions",
   "license": "Apache-2.0",

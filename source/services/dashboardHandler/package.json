@@ -1,6 +1,6 @@
 {
   "name": "dashboard-handler",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "microservice to handle dashboard CRUD operations",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "build:prune": "npm run prune:logger && npm run prune:error",
     "build:copy": "cp -RL ./node_modules ./dist/node_modules && rm -rf ./dist/__tests__",
     "build:zip": "cd ./dist && zip -r dashboardHandler.zip .",
-    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm run build:prune && npm prune --production && npm run build:copy && npm run build:zip"
+    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm prune --production && npm run build:prune && npm run build:copy && npm run build:zip"
   },
   "author": "aws-solutions@",
   "license": "Apache-2.0",

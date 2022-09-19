@@ -19,7 +19,7 @@
     "prune:logger": "cd ./node_modules/logger && npm prune --production",
     "prune:error": "cd ./node_modules/error && npm prune --production",
     "build:prune": "npm run prune:logger && npm run prune:error",
-    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm run build:prune && npm prune --production && npm run build:copy && npm run build:zip"
+    "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm prune --production && npm run build:prune &&  npm run build:copy && npm run build:zip"
   },
   "author": "aws-solutions@",
   "license": "Apache-2.0",
