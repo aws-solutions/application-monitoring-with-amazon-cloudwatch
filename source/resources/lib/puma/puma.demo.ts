@@ -131,7 +131,7 @@ export class PumaDemo extends NestedStack {
       'echo "======setting up cloudwatch agent and puma server======"',
       "wget https://kojipkgs.fedoraproject.org//packages/sqlite/3.8.11/1.fc21/x86_64/sqlite-devel-3.8.11-1.fc21.x86_64.rpm",
       "wget https://kojipkgs.fedoraproject.org//packages/sqlite/3.8.11/1.fc21/x86_64/sqlite-3.8.11-1.fc21.x86_64.rpm",
-      "yum install -y nodejs yarn ruby-devel sqlite-3.8.11-1.fc21.x86_64.rpm sqlite-devel-3.8.11-1.fc21.x86_64.rpm supervisor",
+      "yum install -y nodejs yarn ruby-devel sqlite-3.8.11-1.fc21.x86_64.rpm sqlite-devel-3.8.11-1.fc21.x86_64.rpm supervisor git",
       "gem install bundler rails",
       "rails new ~/sample-app",
       "cd ~/sample-app",
