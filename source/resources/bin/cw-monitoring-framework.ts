@@ -13,9 +13,24 @@
  *  and limitations under the License.
  */
 
-import * as cdk from "@aws-cdk/core";
+import { App, DefaultStackSynthesizer } from "aws-cdk-lib";
 import { FrameworkInfra } from "../lib/framework.infra";
-const app = new cdk.App();
+import { AppRegistryForSolution } from "../lib/app-registry/app-registry";
+
+const app = new App();
 
 // deploy framework infrastructure
-new FrameworkInfra(app, "CW-Monitoring-Framework-Stack");
+const mainStack = new FrameworkInfra(app, "CW-Monitoring-Framework-Stack", {
+  synthesizer: new DefaultStackSynthesizer({
+    generateBootstrapVersionRule: false,
+  }),
+});
+
+new AppRegistryForSolution(mainStack, mainStack.stackId, {
+  solutionId: app.node.tryGetContext("SOLUTION_ID"),
+  solutionName: app.node.tryGetContext("SOLUTION_NAME"),
+  solutionVersion: app.node.tryGetContext("SOLUTION_VERSION"),
+  appRegistryApplicationName: app.node.tryGetContext("APP_REGISTRY_NAME"),
+  applicationType: app.node.tryGetContext("APPLICATION_TYPE"),
+  attributeGroupName: app.node.tryGetContext("ATTRIBUTE_GROUP_NAME"),
+}).associateAppWithNestedStacks(mainStack.nestedStacks);

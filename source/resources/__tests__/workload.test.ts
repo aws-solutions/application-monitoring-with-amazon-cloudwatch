@@ -11,85 +11,81 @@
  *  and limitations under the License.
  */
 
-import "@aws-cdk/assert/jest";
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
+import { Match, Template } from "aws-cdk-lib/assertions";
 import { WorkloadInfra } from "../lib/workload.infra";
-import {
-  anything,
-  arrayWith,
-  objectLike,
-  stringLike,
-  SynthUtils,
-} from "@aws-cdk/assert";
 
 describe("==Infrastructure==", () => {
   const app = new App();
   const stack = new Stack(app, "ParentStack");
   const apacheStack = new WorkloadInfra(stack, "Apache");
+  const apacheTemplate = Template.fromStack(apacheStack);
 
   test("snapshot test", () => {
-    expect(SynthUtils.toCloudFormation(apacheStack)).toMatchSnapshot();
+    expect(apacheTemplate.toJSON()).toMatchSnapshot();
   });
 
   test("has string list SSM parameter", () => {
-    expect(apacheStack).toHaveResource("AWS::SSM::Parameter", {
+    apacheTemplate.hasResourceProperties("AWS::SSM::Parameter", {
       Type: "StringList",
     });
   });
 
   test("has SQS queue", () => {
-    expect(apacheStack).toHaveResource("AWS::SQS::Queue", {
+    apacheTemplate.hasResourceProperties("AWS::SQS::Queue", {
       KmsMasterKeyId: "alias/aws/sqs",
     });
   });
 
   test("has 4 lambda functions", () => {
-    expect(apacheStack).toHaveResourceLike("AWS::Lambda::Function", {
-      Runtime: "nodejs14.x",
-      DeadLetterConfig: objectLike({ TargetArn: anything() }),
+    apacheTemplate.hasResourceProperties("AWS::Lambda::Function", {
+      Runtime: "nodejs16.x",
+      DeadLetterConfig: Match.objectLike({
+        TargetArn: Match.objectLike(Match.anyValue),
+      }),
     });
-    expect(apacheStack).toCountResources("AWS::Lambda::Function", 4);
+    apacheTemplate.resourceCountIs("AWS::Lambda::Function", 4);
   });
 
   test("IAM policy for tag handler", () => {
-    expect(apacheStack).toHaveResourceLike("AWS::IAM::Policy", {
+    apacheTemplate.hasResourceProperties("AWS::IAM::Policy", {
       PolicyDocument: {
-        Statement: arrayWith(
-          objectLike({
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Action: ["ssm:PutParameter", "ssm:GetParameter"],
+          }),
+          Match.objectLike({
             Action: "ec2:DescribeTags",
           }),
-          objectLike({
-            Action: ["ssm:PutParameter", "ssm:GetParameter"],
-          })
-        ),
+        ]),
       },
     });
   });
 
   test("IAM policy for dashboard handler", () => {
-    expect(apacheStack).toHaveResourceLike("AWS::IAM::Policy", {
+    apacheTemplate.hasResourceProperties("AWS::IAM::Policy", {
       PolicyDocument: {
-        Statement: arrayWith(
-          objectLike({
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Action: "ssm:GetParameter",
+          }),
+          Match.objectLike({
             Action: ["cloudwatch:PutDashboard", "cloudwatch:DeleteDashboards"],
           }),
-          objectLike({
-            Action: "ssm:GetParameter",
-          })
-        ),
+        ]),
       },
     });
   });
 
   test("CloudWatch Events rule for EC2 describe", () => {
-    expect(apacheStack).toHaveResource("AWS::Events::Rule", {
-      ScheduleExpression: stringLike("rate*"),
+    apacheTemplate.hasResourceProperties("AWS::Events::Rule", {
+      ScheduleExpression: Match.stringLikeRegexp("rate*"),
     });
   });
 
   test("CloudWatch Events rule for put dashboard", () => {
-    expect(apacheStack).toHaveResource("AWS::Events::Rule", {
-      EventPattern: objectLike({
+    apacheTemplate.hasResourceProperties("AWS::Events::Rule", {
+      EventPattern: Match.objectLike({
         source: ["aws.ssm"],
         "detail-type": ["Parameter Store Change"],
       }),

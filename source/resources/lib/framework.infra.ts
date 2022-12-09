@@ -17,15 +17,16 @@
  */
 
 import {
-  Stack,
   App,
-  CfnParameter,
-  CfnOutput,
   CfnCondition,
+  CfnOutput,
+  CfnParameter,
+  CfnResource,
   Fn,
   NestedStack,
-  CfnResource,
-} from "@aws-cdk/core";
+  Stack,
+  StackProps,
+} from "aws-cdk-lib";
 import { WorkloadInfra } from "./workload.infra";
 import { ApacheDemo } from "./apache/apache.demo";
 import { NginxDemo } from "./nginx/nginx.demo";
@@ -33,8 +34,10 @@ import { PumaDemo } from "./puma/puma.demo";
 import { manifest, Workload } from "./exports";
 
 export class FrameworkInfra extends Stack {
-  constructor(scope: App, id: string) {
-    super(scope, id);
+  nestedStacks: NestedStack[];
+  constructor(scope: App, id: string, props: StackProps) {
+    super(scope, id, props);
+    this.nestedStacks = [];
 
     //=============================================================================================
     // Parameters
@@ -216,6 +219,7 @@ export class FrameworkInfra extends Stack {
       });
       (stack.nestedStackResource as CfnResource).cfnOptions.condition =
         Workload[identifier].DeployCheck;
+      this.nestedStacks.push(stack);
     });
 
     /**
@@ -228,6 +232,9 @@ export class FrameworkInfra extends Stack {
     );
     (apacheDemoStack.nestedStackResource as CfnResource).cfnOptions.condition =
       apacheDemoCheck;
+    if (apacheDeployCheck) {
+      this.nestedStacks.push(apacheDemoStack);
+    }
 
     /**
      * @description Nginx Demo stack
@@ -236,6 +243,9 @@ export class FrameworkInfra extends Stack {
     const nginxDemoStack: NestedStack = new NginxDemo(this, "Nginx-Demo-Stack");
     (nginxDemoStack.nestedStackResource as CfnResource).cfnOptions.condition =
       nginxDemoCheck;
+    if (nginxDemoCheck) {
+      this.nestedStacks.push(nginxDemoStack);
+    }
 
     /**
      * @description Puma Demo stack
@@ -244,6 +254,9 @@ export class FrameworkInfra extends Stack {
     const pumaDemoStack: NestedStack = new PumaDemo(this, "Puma-Demo-Stack");
     (pumaDemoStack.nestedStackResource as CfnResource).cfnOptions.condition =
       pumaDemoCheck;
+    if (pumaDemoCheck) {
+      this.nestedStacks.push(pumaDemoStack);
+    }
 
     /**
      * the framework stack can be extended for new workloads

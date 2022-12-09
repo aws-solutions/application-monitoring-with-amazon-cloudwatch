@@ -11,7 +11,7 @@
  *  and limitations under the License.
  */
 
-import { CfnCondition } from "@aws-cdk/core";
+import { CfnCondition } from "aws-cdk-lib";
 
 /**
  * @description log levels for the application

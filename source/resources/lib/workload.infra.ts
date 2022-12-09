@@ -16,31 +16,31 @@
  * @author @aws-solutions
  */
 
+import { LogLevel, manifest } from "./exports";
+import * as path from "path";
 import {
-  Stack,
   CfnMapping,
-  NestedStack,
-  CfnParameter,
-  NestedStackProps,
-  Duration,
   CfnOutput,
+  CfnParameter,
   CustomResource,
-} from "@aws-cdk/core";
-import { ParameterTier, StringListParameter } from "@aws-cdk/aws-ssm";
-import { Rule, Schedule } from "@aws-cdk/aws-events";
-import { CfnFunction, Code, Function, Runtime } from "@aws-cdk/aws-lambda";
-import { Queue, QueueEncryption } from "@aws-cdk/aws-sqs";
-import { LambdaFunction } from "@aws-cdk/aws-events-targets";
+  Duration,
+  NestedStack,
+  NestedStackProps,
+  Stack,
+} from "aws-cdk-lib";
+import { CfnFunction, Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
 import {
   CfnPolicy,
   Effect,
   IRole,
   Policy,
   PolicyStatement,
-} from "@aws-cdk/aws-iam";
-import { LogLevel, manifest } from "./exports";
-import { Provider } from "@aws-cdk/custom-resources";
-import * as path from "path";
+} from "aws-cdk-lib/aws-iam";
+import { Provider } from "aws-cdk-lib/custom-resources";
+import { ParameterTier, StringListParameter } from "aws-cdk-lib/aws-ssm";
+import { Queue, QueueEncryption } from "aws-cdk-lib/aws-sqs";
+import { LambdaFunction } from "aws-cdk-lib/aws-events-targets";
+import { Rule, Schedule } from "aws-cdk-lib/aws-events";
 
 export class WorkloadInfra extends NestedStack {
   readonly account: string;
@@ -150,7 +150,7 @@ export class WorkloadInfra extends NestedStack {
     const helperFunction = new Function(this, "Helper", {
       description:
         "DO NOT DELETE - CloudWatch Monitoring Framework - helper function",
-      runtime: Runtime.NODEJS_14_X,
+      runtime: Runtime.NODEJS_16_X,
       code: Code.fromAsset(
         `${path.dirname(__dirname)}/../services/helper/dist/helperFunction.zip`
       ),
@@ -258,7 +258,7 @@ export class WorkloadInfra extends NestedStack {
      */
     const tagHandler = new Function(this, "TagHandler", {
       description: `DO NOT DELETE - CloudWatch Monitoring Framework - ${workload.valueAsString} tag handler function`,
-      runtime: Runtime.NODEJS_14_X,
+      runtime: Runtime.NODEJS_16_X,
       code: Code.fromAsset(
         `${path.dirname(__dirname)}/../services/tagHandler/dist/tagHandler.zip`
       ),
@@ -315,7 +315,7 @@ export class WorkloadInfra extends NestedStack {
      */
     const dashboardHandler = new Function(this, "DashboardHandler", {
       description: `DO NOT DELETE - CloudWatch Monitoring Framework - ${workload.valueAsString} dashboard handler function`,
-      runtime: Runtime.NODEJS_14_X,
+      runtime: Runtime.NODEJS_16_X,
       code: Code.fromAsset(
         `${path.dirname(
           __dirname
