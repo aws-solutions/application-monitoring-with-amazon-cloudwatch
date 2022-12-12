@@ -1,6 +1,6 @@
-# Amazon CloudWatch Monitoring Framework
+# Application Monitoring with Amazon CloudWatch
 
-**[🚀Solution Landing Page](https://aws.amazon.com/solutions/implementations/amazon-cloudwatch-monitoring-framework)** | **[🚧Feature request](https://github.com/aws-solutions/amazon-cloudwatch-monitoring-framework/issues/new?assignees=&labels=feature-request%2C+enhancement&template=feature_request.md&title=)** | **[🐛Bug Report](https://github.com/aws-solutions/amazon-cloudwatch-monitoring-framework/issues/new?assignees=&labels=bug%2C+triage&template=bug_report.md&title=)** | **[📜Documentation Improvement](https://github.com/aws-solutions/amazon-cloudwatch-monitoring-framework/issues/new?assignees=&labels=document-update&template=documentation_improvements.md&title=)**
+**[🚀Solution Landing Page](https://aws.amazon.com/solutions/implementations/application-monitoring-with-cloudwatch/)** | **[🚧Feature request](https://github.com/aws-solutions/application-monitoring-with-amazon-cloudwatch/issues/new?assignees=&labels=feature-request%2C+enhancement&template=feature_request.md&title=)** | **[🐛Bug Report](https://github.com/aws-solutions/application-monitoring-with-amazon-cloudwatch/issues/new?assignees=&labels=bug%2C+triage&template=bug_report.md&title=)** | **[📜Documentation Improvement](https://github.com/aws-solutions/application-monitoring-with-amazon-cloudwatch/issues/new?assignees=&labels=document-update&template=documentation_improvements.md&title=)**
 
 _Note: For any relevant information outside the scope of this readme, please refer to the solution landing page and implementation guide._
 
@@ -26,7 +26,7 @@ _Note: For any relevant information outside the scope of this readme, please ref
 
 ## Solution Overview
 
-Amazon CloudWatch Monitoring Framework is intended for customers looking to easily gain actionable insight into their EC2 workloads. The process to configure cloudwatch agent, identify the right metrics, logs and create dashboard to see workload performance can be tedious and time-consuming.
+Application Monitoring with Amazon CloudWatch is intended for customers looking to easily gain actionable insight into their EC2 workloads. The process to configure cloudwatch agent, identify the right metrics, logs and create dashboard to seeg workload performance can be tedious and time-consuming.
 
 The solution automates the process of dashboard setup and provides reference config files for some of the most common workloads. Using a tagging mechanism you can identify the instances you want to be monitored on the dashboard. The solution makes it easy for the customers to focus on workload KPIs rather than spending time on setting up the needed dashboards.
 
@@ -226,7 +226,7 @@ _Note: Workload name in [resource export file](./source/resources/lib/export.ts)
 
 ## File structure
 
-Amazon CloudWatch Monitoring Framework solution consists of:
+Application Monitoring with Amazon CloudWatch solution consists of:
 
 - cdk constructs to generate needed infrastructure resources
 - tagHandler to validate tag, identify EC2 resources with the tag and update SSM parameter with instance-ids
@@ -250,6 +250,7 @@ Amazon CloudWatch Monitoring Framework solution consists of:
       |-framework.infra.ts             [ CDK stack framework resources ]  
       |-workload.infra.ts              [ generic CDK stack for workload resources ] 
       |-exports                        [ manifest file for framework and workload stacks ]
+      |-app-registry                   [CDK constructs for creating app registry resources] 
     |-config_files                     [ tsconfig, jest.config.js, package.json etc. ]
   |-services/
     |-helper/                          [ lambda helper custom resource to help with solution launch/update/delete ]
@@ -280,7 +281,7 @@ See license [here](./LICENSE.txt)
 
 ## Collection of operational metrics
 
-This solution collects anonymous operational metrics to help AWS improve the quality and features of the solution. For more information, including how to disable this capability, please see the [implementation guide](https://docs.aws.amazon.com/solutions/latest/amazon-cloudwatch-monitoring-framework).
+This solution collects anonymous operational metrics to help AWS improve the quality and features of the solution. For more information, including how to disable this capability, please see the [implementation guide](https://docs.aws.amazon.com/solutions/latest/application-monitoring-with-cloudwatch/).
 
 ---
 

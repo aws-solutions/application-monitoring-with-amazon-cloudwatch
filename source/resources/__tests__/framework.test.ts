@@ -11,15 +11,16 @@
  *  and limitations under the License.
  */
 
-import { App } from "@aws-cdk/core";
+import { App } from "aws-cdk-lib";
+import { Template } from "aws-cdk-lib/assertions";
 import { FrameworkInfra } from "../lib/framework.infra";
-import "@aws-cdk/assert/jest";
-import { SynthUtils } from "@aws-cdk/assert";
 
 describe("==Framework Infrastructure==", () => {
   const app = new App();
-  const stack = new FrameworkInfra(app, "Framework");
+  const stack = new FrameworkInfra(app, "Framework", {});
+  const template = Template.fromStack(stack);
+
   test("snapshot test", () => {
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    expect(template.toJSON()).toMatchSnapshot();
   });
 });

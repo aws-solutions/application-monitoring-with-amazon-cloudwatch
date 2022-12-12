@@ -11,27 +11,26 @@
  *  and limitations under the License.
  */
 
-import { App, Stack } from "@aws-cdk/core";
+import { App, Stack } from "aws-cdk-lib";
+import { Template } from "aws-cdk-lib/assertions";
 import { DemoConstruct } from "../lib/demo.infra";
-import "@aws-cdk/assert/jest";
-import { SynthUtils } from "@aws-cdk/assert";
 
 describe("==Demo Infrastructure==", () => {
   const app = new App();
   const stack = new Stack(app, "Framework");
   new DemoConstruct(stack, "DemoInfra");
+
+  const template = Template.fromStack(stack);
   test("snapshot test", () => {
-    expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+    expect(template.toJSON()).toMatchSnapshot();
   });
 
   test("demo infra has a vpc with internet gateway", () => {
-    expect(stack).toHaveResource("AWS::EC2::VPC");
-    expect(stack).toCountResources("AWS::EC2::VPC", 1);
-    expect(stack).toHaveResource("AWS::EC2::InternetGateway");
+    template.resourceCountIs("AWS::EC2::VPC", 1);
+    template.resourceCountIs("AWS::EC2::InternetGateway", 1);
   });
 
   test("demo infra has a security group", () => {
-    expect(stack).toHaveResource("AWS::EC2::SecurityGroup");
-    expect(stack).toCountResources("AWS::EC2::SecurityGroup", 1);
+    template.resourceCountIs("AWS::EC2::SecurityGroup", 1);
   });
 });

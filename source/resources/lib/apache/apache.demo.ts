@@ -18,26 +18,26 @@
  */
 
 import {
-  Stack,
-  NestedStack,
-  NestedStackProps,
   CfnMapping,
   CfnOutput,
-} from "@aws-cdk/core";
+  NestedStack,
+  NestedStackProps,
+  Stack,
+} from "aws-cdk-lib";
 import {
-  Instance,
-  InstanceType,
+  AmazonLinuxCpuType,
+  AmazonLinuxGeneration,
+  AmazonLinuxVirt,
+  CloudFormationInit,
+  InitCommand,
   InitFile,
+  InitPackage,
   InitService,
   InitServiceRestartHandle,
-  CloudFormationInit,
+  Instance,
+  InstanceType,
   MachineImage,
-  AmazonLinuxVirt,
-  AmazonLinuxGeneration,
-  AmazonLinuxCpuType,
-  InitPackage,
-  InitCommand,
-} from "@aws-cdk/aws-ec2";
+} from "aws-cdk-lib/aws-ec2";
 import { DemoConstruct } from "../demo.infra";
 import { manifest, Workload } from "../exports";
 

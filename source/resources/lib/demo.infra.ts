@@ -11,32 +11,34 @@
  *  and limitations under the License.
  */
 
-/**
- * @description
- * This is demo infrastructure construct
- * @author @aws-solutions
- */
-
-import { Stack, CfnResource, Construct, RemovalPolicy } from "@aws-cdk/core";
+import { CfnResource, RemovalPolicy, Stack } from "aws-cdk-lib";
 import {
-  Vpc,
-  SecurityGroup,
-  Peer,
-  Port,
-  SubnetType,
   FlowLog,
   FlowLogDestination,
   FlowLogResourceType,
   FlowLogTrafficType,
-} from "@aws-cdk/aws-ec2";
+  IpAddresses,
+  Peer,
+  Port,
+  SecurityGroup,
+  SubnetType,
+  Vpc,
+} from "aws-cdk-lib/aws-ec2";
 import {
   Effect,
   Policy,
   PolicyStatement,
   Role,
   ServicePrincipal,
-} from "@aws-cdk/aws-iam";
-import { LogGroup, RetentionDays } from "@aws-cdk/aws-logs";
+} from "aws-cdk-lib/aws-iam";
+import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
+import { Construct } from "constructs";
+
+/**
+ * @description
+ * This is demo infrastructure construct
+ * @author @aws-solutions
+ */
 
 /**
  * @description interface for demo construct
@@ -74,7 +76,7 @@ export class DemoConstruct extends Construct implements IDemoConstruct {
      * @type {Vpc}
      */
     this.demoVPC = new Vpc(this, "DemoVPC", {
-      cidr: "10.0.1.0/26", //NOSONAR reviewed
+      ipAddresses: IpAddresses.cidr("10.0.1.0/26"), //NOSONAR reviewed
       natGateways: 0,
       vpnGateway: false,
       subnetConfiguration: [
