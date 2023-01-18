@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1] - 2023-01-13
+
+### Changed
+
+- Updated json5 version to 2.2.3 to address the [prototype pollution vulnerability](https://nvd.nist.gov/vuln/detail/CVE-2022-46175)
+
 ## [1.2.0] - 2022-12-08
 
 ### Changed
