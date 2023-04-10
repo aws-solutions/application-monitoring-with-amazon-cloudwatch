@@ -24,7 +24,7 @@
   "author": "aws-solutions@",
   "license": "Apache-2.0",
   "dependencies": {
-    "aws-sdk": "^2.840.0",
+    "aws-sdk": "^2.1354.0",
     "logger": "file:../utils/logger",
     "error": "file:../utils/error"
   },
