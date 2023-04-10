@@ -24,7 +24,7 @@
   "author": "aws-solutions",
   "license": "Apache-2.0",
   "dependencies": {
-    "aws-sdk": "^2.714.0",
+    "aws-sdk": "^2.1354.0",
     "uuid": "^8.2.0",
     "logger": "file:../utils/logger",
     "metrics": "file:../utils/metrics"
