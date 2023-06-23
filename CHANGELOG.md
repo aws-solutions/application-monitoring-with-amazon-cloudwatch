@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2023-06-22
+
+### Changed
+
+- Library updates to address [xml2js is vulnerable to prototype pollution](https://cwe.mitre.org/data/definitions/1321.html)
+- Library updates to address [http-cache-semantics vulnerable to Regular Expression Denial of Service](https://cwe.mitre.org/data/definitions/1333.html)
+
+
 ## [1.2.1] - 2023-01-13
 
 ### Changed
