@@ -125,6 +125,7 @@ export class PumaDemo extends NestedStack {
       }),
       init: init,
       securityGroup: demoInfra.demoSecurityGroup,
+      requireImdsv2: true,
     });
 
     demoEC2.addUserData(

@@ -131,7 +131,7 @@ export class WorkloadInfra extends NestedStack {
     const map = new CfnMapping(this, "StackMap", {
       mapping: {
         Metric: {
-          SendAnonymousMetric: manifest.sendMetric,
+          SendAnonymizedMetric: manifest.sendMetric,
           MetricsEndpoint: manifest.metricsEndpoint, // aws-solutions metrics endpoint
         },
         Solution: {
@@ -158,7 +158,7 @@ export class WorkloadInfra extends NestedStack {
       memorySize: 512,
       environment: {
         METRICS_ENDPOINT: map.findInMap("Metric", "MetricsEndpoint"),
-        SEND_METRIC: map.findInMap("Metric", "SendAnonymousMetric"),
+        SEND_METRIC: map.findInMap("Metric", "SendAnonymizedMetric"),
         LOG_LEVEL: LogLevel.INFO, //change as needed
         CUSTOM_SDK_USER_AGENT: `AwsSolution/${map.findInMap(
           "Solution",
@@ -266,7 +266,7 @@ export class WorkloadInfra extends NestedStack {
       memorySize: 512,
       environment: {
         METRICS_ENDPOINT: map.findInMap("Metric", "MetricsEndpoint"),
-        SEND_METRIC: map.findInMap("Metric", "SendAnonymousMetric"),
+        SEND_METRIC: map.findInMap("Metric", "SendAnonymizedMetric"),
         LOG_LEVEL: LogLevel.INFO, //change as needed
         SSM_PARAMETER: ssmParameter.parameterName,
         TAG_SCHEMA: tag.valueAsString,
@@ -325,7 +325,7 @@ export class WorkloadInfra extends NestedStack {
       memorySize: 512,
       environment: {
         METRICS_ENDPOINT: map.findInMap("Metric", "MetricsEndpoint"),
-        SEND_METRIC: map.findInMap("Metric", "SendAnonymousMetric"),
+        SEND_METRIC: map.findInMap("Metric", "SendAnonymizedMetric"),
         LOG_LEVEL: LogLevel.INFO, //change as needed
         SSM_PARAMETER: ssmParameter.parameterName,
         ACCESS_LOG_GROUP: accesslog.valueAsString,

@@ -21,7 +21,10 @@
     "build:zip": "cd ./dist && zip -r dashboardHandler.zip .",
     "build:all": "npm run build:clean && npm run build:install && npm run build:ts && npm prune --production && npm run build:prune && npm run build:copy && npm run build:zip"
   },
-  "author": "aws-solutions@",
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com/solutions"
+  },
   "license": "Apache-2.0",
   "dependencies": {
     "aws-sdk": "^2.840.0",

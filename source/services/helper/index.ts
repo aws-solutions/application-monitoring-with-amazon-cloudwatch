@@ -114,7 +114,7 @@ exports.handler = async (event: IEvent, context: { logStreamName: string }) => {
             Version: properties.SolutionVersion,
           },
         };
-        await Metrics.sendAnonymousMetric(
+        await Metrics.sendAnonymizedMetric(
           <string>process.env.METRICS_ENDPOINT,
           metric
         );
