@@ -130,6 +130,7 @@ export class NginxDemo extends NestedStack {
       }),
       init: init,
       securityGroup: demoInfra.demoSecurityGroup,
+      requireImdsv2: true,
     });
 
     demoEC2.addUserData(

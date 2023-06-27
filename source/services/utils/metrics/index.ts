@@ -18,10 +18,10 @@ import got from "got";
  */
 export class Metrics {
   /**
-   * Sends anonymous metric
+   * Sends anonymized metric
    * @param {object} metric - metric JSON data
    */
-  static async sendAnonymousMetric(
+  static async sendAnonymizedMetric(
     endpoint: string,
     metric: {
       Solution: string;
