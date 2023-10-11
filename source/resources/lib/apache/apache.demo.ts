@@ -26,7 +26,6 @@ import {
 } from "aws-cdk-lib";
 import {
   AmazonLinuxCpuType,
-  AmazonLinuxGeneration,
   AmazonLinuxVirt,
   CloudFormationInit,
   InitCommand,
@@ -131,9 +130,8 @@ export class ApacheDemo extends NestedStack {
     const demoEC2: Instance = new Instance(this, "ApacheDemoEC2", {
       vpc: demoInfra.demoVPC,
       instanceType: new InstanceType("t3.micro"),
-      machineImage: MachineImage.latestAmazonLinux({
+      machineImage: MachineImage.latestAmazonLinux2({
         virtualization: AmazonLinuxVirt.HVM,
-        generation: AmazonLinuxGeneration.AMAZON_LINUX_2,
         cpuType: AmazonLinuxCpuType.X86_64,
       }),
       init: init,

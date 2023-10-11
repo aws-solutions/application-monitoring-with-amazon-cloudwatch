@@ -39,7 +39,7 @@ describe("==Infrastructure==", () => {
 
   test("has 4 lambda functions", () => {
     apacheTemplate.hasResourceProperties("AWS::Lambda::Function", {
-      Runtime: "nodejs16.x",
+      Runtime: "nodejs18.x",
       DeadLetterConfig: Match.objectLike({
         TargetArn: Match.objectLike(Match.anyValue),
       }),
