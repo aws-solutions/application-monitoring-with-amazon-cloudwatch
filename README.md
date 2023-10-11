@@ -269,7 +269,7 @@ Application Monitoring with Amazon CloudWatch solution consists of:
       |-__tests/                       [ unit tests for tag handler ] 
       |-lib/ 
         |-EC2Helper.ts                 [ class for EC2 tag operations ]
-        |-SSMHelper.ts                 [ class for SSM parameter store operations ]
+        |-TagHandlerSSMHelper.ts       [ class for SSM parameter store operations ]
       |-index.ts                       [ entry point for lambda function]     
       |-config_files                   [ tsconfig, jest.config.js, package.json etc. ]   
   |-config_files                       [ eslint, prettier, tsconfig, jest.config.js, package.json etc. ]  

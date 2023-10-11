@@ -85,7 +85,7 @@ export class AppRegistryForSolution extends Construct {
       }
     );
 
-    this.registryApplication.associateAttributeGroup(attributeGroup);
+    attributeGroup.associateWith(this.registryApplication);
   }
 
   private createMapForAppRegistry(stack: Stack, props: AppRegistryProps) {

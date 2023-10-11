@@ -18,27 +18,22 @@
  */
 
 import {
-  CfnMapping,
   CfnOutput,
   NestedStack,
   NestedStackProps,
   Stack,
+  Duration,
 } from "aws-cdk-lib";
 import {
   AmazonLinuxCpuType,
-  AmazonLinuxGeneration,
   AmazonLinuxVirt,
-  CloudFormationInit,
-  InitCommand,
-  InitFile,
-  InitPackage,
-  InitServiceRestartHandle,
   Instance,
   InstanceType,
   MachineImage,
+  CfnInstance,
 } from "aws-cdk-lib/aws-ec2";
 import { DemoConstruct } from "../demo.infra";
-import { manifest, Workload } from "../exports";
+import { manifest } from "../exports";
 
 /**
  * @class
@@ -58,23 +53,6 @@ export class PumaDemo extends NestedStack {
     this.templateOptions.templateFormatVersion = manifest.templateVersion;
 
     //=============================================================================================
-    // Map
-    //=============================================================================================
-    const map = new CfnMapping(this, "StackMap", {
-      mapping: {
-        Puma: {
-          AccessLog: Workload.Puma.AccessLog, // access log for puma instances, change as needed
-          InfraConfig:
-            "https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/linux_cw_infra.json", // base infra config file
-          PumaCWConfig:
-            "https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/puma.config/puma.json", // puma cloudwatch config file
-          CloudWatchAgent:
-            "https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/amazon-cloudwatch-agent.rpm",
-        },
-      },
-    });
-
-    //=============================================================================================
     // Resources
     //=============================================================================================
     /**
@@ -83,34 +61,6 @@ export class PumaDemo extends NestedStack {
      */
     const demoInfra: DemoConstruct = new DemoConstruct(this, "PumaDemoInfra");
 
-    const handle: InitServiceRestartHandle = new InitServiceRestartHandle();
-
-    /**
-     * @description cloudformation init configuration for web server
-     * @type {CloudFormationInit}
-     */
-    const init: CloudFormationInit = CloudFormationInit.fromElements(
-      InitPackage.rpm(map.findInMap("Puma", "CloudWatchAgent"), {
-        serviceRestartHandles: [handle],
-      }),
-      InitPackage.yum("gcc-c++", { serviceRestartHandles: [handle] }),
-      InitFile.fromUrl(
-        "/opt/aws/amazon-cloudwatch-agent/bin/infra_config.json",
-        map.findInMap("Puma", "InfraConfig")
-      ),
-      InitFile.fromUrl(
-        "/opt/aws/amazon-cloudwatch-agent/bin/puma_config.json",
-        map.findInMap("Puma", "PumaCWConfig")
-      ),
-      InitCommand.shellCommand("amazon-linux-extras install -y ruby3.0 epel"),
-      InitCommand.shellCommand(
-        "curl -sL https://rpm.nodesource.com/setup_16.x | sudo bash -"
-      ),
-      InitCommand.shellCommand(
-        "curl -sL https://dl.yarnpkg.com/rpm/yarn.repo | tee /etc/yum.repos.d/yarn.repo"
-      )
-    );
-
     /**
      * @description web server instance
      * @type {Instance}
@@ -118,38 +68,52 @@ export class PumaDemo extends NestedStack {
     const demoEC2: Instance = new Instance(this, "PumaDemoEC2", {
       vpc: demoInfra.demoVPC,
       instanceType: new InstanceType("t3.micro"),
-      machineImage: MachineImage.latestAmazonLinux({
+      machineImage: MachineImage.latestAmazonLinux2({
         virtualization: AmazonLinuxVirt.HVM,
-        generation: AmazonLinuxGeneration.AMAZON_LINUX_2,
         cpuType: AmazonLinuxCpuType.X86_64,
       }),
-      init: init,
       securityGroup: demoInfra.demoSecurityGroup,
       requireImdsv2: true,
     });
 
+    const demoInstanceLogicalId = demoEC2.stack.getLogicalId(
+      demoEC2.node.defaultChild as CfnInstance
+    );
+
     demoEC2.addUserData(
+      "set -x",
       'echo "======setting up cloudwatch agent and puma server======"',
+      "wget https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/puma.config/amazon-cloudwatch-agent.rpm",
+      "wget https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/linux_cw_infra.json -P /opt/aws/amazon-cloudwatch-agent/bin/",
+      "wget https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/puma_config.json -P /opt/aws/amazon-cloudwatch-agent/bin/",
+      "yum install -y amazon-cloudwatch-agent.rpm",
+      "systemctl restart amazon-cloudwatch-agent",
       "wget https://kojipkgs.fedoraproject.org//packages/sqlite/3.8.11/1.fc21/x86_64/sqlite-devel-3.8.11-1.fc21.x86_64.rpm",
       "wget https://kojipkgs.fedoraproject.org//packages/sqlite/3.8.11/1.fc21/x86_64/sqlite-3.8.11-1.fc21.x86_64.rpm",
-      "yum install -y nodejs yarn ruby-devel sqlite-3.8.11-1.fc21.x86_64.rpm sqlite-devel-3.8.11-1.fc21.x86_64.rpm supervisor git",
+      "yum install -y sqlite-3.8.11-1.fc21.x86_64.rpm sqlite-devel-3.8.11-1.fc21.x86_64.rpm git",
+      "amazon-linux-extras install epel -y",
+      "yum install -y supervisor ",
+      "yum install -y gcc-c++ libyaml-devel zlib-devel libfff-devel openssl-devel readline-devel",
+      "amazon-linux-extras install -y ruby3.0 epel",
+      "yum install -y ruby-devel",
       "gem install bundler rails",
+      "export PATH=/usr/local/bin/:$PATH",
       "rails new ~/sample-app",
       "cd ~/sample-app",
       "rake db:create assets:precompile",
-      "rm /etc/supervisord.conf",
+      "rm -f /etc/supervisord.conf",
       "wget https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/puma.config/supervisord.conf -P /etc/",
       "systemctl restart supervisord",
       "systemctl enable supervisord",
-      "rm /root/sample-app/config/puma.rb",
+      "rm -f /root/sample-app/config/puma.rb",
       "wget https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/puma.config/puma.rb -P /root/sample-app/config",
       "bundle add puma-plugin-statsd statsd-instrument",
       "bundle install",
-      "rm /root/sample-app/app/controllers/application_controller.rb",
+      "rm -f /root/sample-app/app/controllers/application_controller.rb",
       "wget https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/puma.config/application_controller.rb -P /root/sample-app/app/controllers",
-      "rm /root/sample-app/config/routes.rb",
+      "rm -f /root/sample-app/config/routes.rb",
       "wget https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/puma.config/routes.rb -P /root/sample-app/config",
-      "rm /root/sample-app/config/environments/production.rb",
+      "rm -f /root/sample-app/config/environments/production.rb",
       "wget https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/puma.config/production.rb -P /root/sample-app/config/environments",
       "mkdir /root/sample-app/app/views/page",
       "wget https://%%TEMPLATE_BUCKET%%.s3.amazonaws.com/%%SOLUTION_NAME%%/%%VERSION%%/puma.config/index.html.erb -P /root/sample-app/app/views/page",
@@ -158,10 +122,23 @@ export class PumaDemo extends NestedStack {
       "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/infra_config.json",
       "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a append-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/puma_config.json",
       "export DAEMONIZE_PUMA=true",
-      "RAILS_ENV='production' RAILS_PORT='80' bundle exec puma -C config/puma.rb"
+      "RAILS_ENV='production' RAILS_PORT='80' bundle exec puma -C config/puma.rb &",
+      "/opt/aws/bin/cfn-signal -e $? --stack " +
+        demoEC2.stack.stackId +
+        " --resource " +
+        demoInstanceLogicalId +
+        " --region " +
+        demoEC2.stack.region
     );
 
     demoEC2.role.attachInlinePolicy(demoInfra.demoInstancePolicy);
+
+    (demoEC2.node.defaultChild as CfnInstance).cfnOptions.creationPolicy = {
+      resourceSignal: {
+        count: 1,
+        timeout: Duration.minutes(20).toIsoString(),
+      },
+    };
 
     //=============================================================================================
     // Output
