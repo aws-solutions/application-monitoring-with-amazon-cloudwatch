@@ -122,7 +122,7 @@ export class WorkloadInfra extends NestedStack {
         },
       },
     };
-    this.templateOptions.description = `(${manifest.solutionId}) - AWS CloudFormation template for deployment of the ${manifest.solutionName} workload infrastructure. Version ${manifest.solutionVersion}`;
+    this.templateOptions.description = `(${manifest.solutionId}-Workload) - AWS CloudFormation template for deployment of the ${manifest.solutionName} workload infrastructure. Version ${manifest.solutionVersion}`;
     this.templateOptions.templateFormatVersion = manifest.templateVersion;
 
     //=============================================================================================
@@ -150,11 +150,11 @@ export class WorkloadInfra extends NestedStack {
     const helperFunction = new Function(this, "Helper", {
       description:
         "DO NOT DELETE - CloudWatch Monitoring Framework - helper function",
-      runtime: Runtime.NODEJS_16_X,
+      runtime: Runtime.NODEJS_18_X,
       code: Code.fromAsset(
         `${path.dirname(__dirname)}/../services/helper/dist/helperFunction.zip`
       ),
-      handler: "index.handler",
+      handler: "HelperIndex.handler",
       memorySize: 512,
       environment: {
         METRICS_ENDPOINT: map.findInMap("Metric", "MetricsEndpoint"),
@@ -258,11 +258,11 @@ export class WorkloadInfra extends NestedStack {
      */
     const tagHandler = new Function(this, "TagHandler", {
       description: `DO NOT DELETE - CloudWatch Monitoring Framework - ${workload.valueAsString} tag handler function`,
-      runtime: Runtime.NODEJS_16_X,
+      runtime: Runtime.NODEJS_18_X,
       code: Code.fromAsset(
         `${path.dirname(__dirname)}/../services/tagHandler/dist/tagHandler.zip`
       ),
-      handler: "index.handler",
+      handler: "TagHandlerIndex.handler",
       memorySize: 512,
       environment: {
         METRICS_ENDPOINT: map.findInMap("Metric", "MetricsEndpoint"),
@@ -315,7 +315,7 @@ export class WorkloadInfra extends NestedStack {
      */
     const dashboardHandler = new Function(this, "DashboardHandler", {
       description: `DO NOT DELETE - CloudWatch Monitoring Framework - ${workload.valueAsString} dashboard handler function`,
-      runtime: Runtime.NODEJS_16_X,
+      runtime: Runtime.NODEJS_18_X,
       code: Code.fromAsset(
         `${path.dirname(
           __dirname

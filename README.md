@@ -47,11 +47,11 @@ The architecture can be broken into two components. **User Interaction** and **D
 
 ## Installing pre-packaged solution template
 
-- If you want to deploy the framework and related resources: [cloudwatch-monitoring-framework.template](https://solutions-reference.s3.amazonaws.com/amazon-cloudwatch-monitoring-framework/latest/amazon-cloudwatch-monitoring-framework.template)
-- If you want to deploy the template for specific workload: [workload.template](https://solutions-reference.s3.amazonaws.com/amazon-cloudwatch-monitoring-framework/latest/workload.template)
-- If you want to deploy the Apache demo instance: [apache-demo.template](https://solutions-reference.s3.amazonaws.com/amazon-cloudwatch-monitoring-framework/latest/apache-demo.template)
-- If you want to deploy the Puma demo instance: [puma-demo.template](https://solutions-reference.s3.amazonaws.com/amazon-cloudwatch-monitoring-framework/latest/puma-demo.template)
-- If you want to deploy the Nginx demo instance: [nginx-demo.template](https://solutions-reference.s3.amazonaws.com/amazon-cloudwatch-monitoring-framework/latest/nginx-demo.template)
+- If you want to deploy the framework and related resources: [cloudwatch-monitoring-framework.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/amazon-cloudwatch-monitoring-framework.template)
+- If you want to deploy the template for specific workload: [workload.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/workload.template)
+- If you want to deploy the Apache demo instance: [apache-demo.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/apache-demo.template)
+- If you want to deploy the Puma demo instance: [puma-demo.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/puma-demo.template)
+- If you want to deploy the Nginx demo instance: [nginx-demo.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/nginx-demo.template)
 
 #### Parameters for framework template
 
@@ -269,7 +269,7 @@ Application Monitoring with Amazon CloudWatch solution consists of:
       |-__tests/                       [ unit tests for tag handler ] 
       |-lib/ 
         |-EC2Helper.ts                 [ class for EC2 tag operations ]
-        |-SSMHelper.ts                 [ class for SSM parameter store operations ]
+        |-TagHandlerSSMHelper.ts       [ class for SSM parameter store operations ]
       |-index.ts                       [ entry point for lambda function]     
       |-config_files                   [ tsconfig, jest.config.js, package.json etc. ]   
   |-config_files                       [ eslint, prettier, tsconfig, jest.config.js, package.json etc. ]  
