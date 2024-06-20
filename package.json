@@ -2,7 +2,7 @@
   "name": "cw-monitoring-framework",
   "description": "AWS Horus - A CloudWatch Monitoring Framework",
   "license": "Apache-2.0",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "scripts": {
     "lint": "./node_modules/eslint/bin/eslint.js . --ext .ts",
     "prettier-format": "./node_modules/prettier/bin-prettier.js --config .prettierrc.yml '**/*.ts' --write",
