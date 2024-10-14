@@ -1,5 +1,8 @@
 # Application Monitoring with Amazon CloudWatch
 
+**Important: Application Monitoring solution will retire in December 2024. We encourage customers to explore using 
+[Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) to set up observability for Apache, NGINX and PUMA workloads running on Amazon Elastic Cloud Compute (Amazon EC2). You can also find other solutions in the [AWS Solutions Library](https://aws.amazon.com/solutions/).**
+
 **[🚀Solution Landing Page](https://aws.amazon.com/solutions/implementations/application-monitoring-with-cloudwatch/)** | **[🚧Feature request](https://github.com/aws-solutions/application-monitoring-with-amazon-cloudwatch/issues/new?assignees=&labels=feature-request%2C+enhancement&template=feature_request.md&title=)** | **[🐛Bug Report](https://github.com/aws-solutions/application-monitoring-with-amazon-cloudwatch/issues/new?assignees=&labels=bug%2C+triage&template=bug_report.md&title=)** | **[📜Documentation Improvement](https://github.com/aws-solutions/application-monitoring-with-amazon-cloudwatch/issues/new?assignees=&labels=document-update&template=documentation_improvements.md&title=)**
 
 _Note: For any relevant information outside the scope of this readme, please refer to the solution landing page and implementation guide._
