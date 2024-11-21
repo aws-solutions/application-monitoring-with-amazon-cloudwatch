@@ -5,14 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.6] - 2024-11-21
+
+### Changed
+
+- Library updates to address [Regular Expression Denial of Service (ReDoS) in cross-spawn](https://avd.aquasec.com/nvd/cve-2024-21538)
+- Library updates to address [micromatch: vulnerable to Regular Expression Denial of Service](https://avd.aquasec.com/nvd/cve-2024-4067)
+
 ## [1.2.5] - 2024-06-20
 
 ### Changed
+
 - Library updates to address [braces: fails to limit the number of characters it can handle](https://avd.aquasec.com/nvd/2024/cve-2024-4068/)
 
 ## [1.2.4] - 2023-10-23
 
 ### Changed
+
 - Library updates to address [Babel vulnerable to arbitrary code execution when compiling specifically crafted malicious code](https://nvd.nist.gov/vuln/detail/CVE-2023-45133)
 
 ## [1.2.3] - 2023-10-12
@@ -28,7 +37,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Library updates to address [xml2js is vulnerable to prototype pollution](https://cwe.mitre.org/data/definitions/1321.html)
 - Library updates to address [http-cache-semantics vulnerable to Regular Expression Denial of Service](https://cwe.mitre.org/data/definitions/1333.html)
-
 
 ## [1.2.1] - 2023-01-13
 
