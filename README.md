@@ -1,6 +1,6 @@
 # Application Monitoring with Amazon CloudWatch
 
-**Important: Application Monitoring solution will retire in December 2024. We encourage customers to explore using 
+**Important: Application Monitoring solution has been retired. We encourage customers to explore using 
 [Amazon CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/Install-CloudWatch-Agent.html) to set up observability for Apache, NGINX and PUMA workloads running on Amazon Elastic Cloud Compute (Amazon EC2). You can also find other solutions in the [AWS Solutions Library](https://aws.amazon.com/solutions/).**
 
 **[🚀Solution Landing Page](https://aws.amazon.com/solutions/implementations/application-monitoring-with-cloudwatch/)** | **[🚧Feature request](https://github.com/aws-solutions/application-monitoring-with-amazon-cloudwatch/issues/new?assignees=&labels=feature-request%2C+enhancement&template=feature_request.md&title=)** | **[🐛Bug Report](https://github.com/aws-solutions/application-monitoring-with-amazon-cloudwatch/issues/new?assignees=&labels=bug%2C+triage&template=bug_report.md&title=)** | **[📜Documentation Improvement](https://github.com/aws-solutions/application-monitoring-with-amazon-cloudwatch/issues/new?assignees=&labels=document-update&template=documentation_improvements.md&title=)**
@@ -11,8 +11,6 @@ _Note: For any relevant information outside the scope of this readme, please ref
 
 - [Solution Overview](#solution-overview)
 - [Architecture](#architecture)
-- [Installation](#installing-pre-packaged-solution-template)
-  - [Parameters](#parameters-for-framework-template)
 - [Customization](#customization)
   - [Setup](#setup)
   - [Changes](#changes)
@@ -47,29 +45,6 @@ The architecture can be broken into two components. **User Interaction** and **D
 - _dashboardHandler_ lambda function reads the SSM parameter and updates the CloudWatch dashboard widgets
 
 <img src="./architecture.png" width="700" height="350">
-
-## Installing pre-packaged solution template
-
-- If you want to deploy the framework and related resources: [cloudwatch-monitoring-framework.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/amazon-cloudwatch-monitoring-framework.template)
-- If you want to deploy the template for specific workload: [workload.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/workload.template)
-- If you want to deploy the Apache demo instance: [apache-demo.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/apache-demo.template)
-- If you want to deploy the Puma demo instance: [puma-demo.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/puma-demo.template)
-- If you want to deploy the Nginx demo instance: [nginx-demo.template](https://solutions-reference.s3.amazonaws.com/application-monitoring-with-amazon-cloudwatch/latest/nginx-demo.template)
-
-#### Parameters for framework template
-
-Parameters control individual workload related resource provisioning
-
-- **_Workload_ Tag Schema:** Tag schema to identify workload instances
-- **_Workload_ Demo Instance:** Do you want to deploy workload-demo instance?
-
-#### Parameters for workload template
-
-- **Workload Name:** Name of the workload. Currently supported are _Apache_, _Nginx_ and _Puma_.
-- **Tag Schema:** EC2 tag schema to identify workload instances.
-- **CW Dashboard Name:** Name for the CloudWatch dashboard created by the solution.
-- **Access Log Group:** CloudWatch Log Group where instances push their access logs
-- **SSM Parameter Name:** SSM parameter used for maintaining workload instance list
 
 ## Customization
 
@@ -130,8 +105,6 @@ To destroy deployed stack
 ```
 npm run cdk-destroy CW-Monitoring-Framework-Stack --profile <PROFILE_NAME>
 ```
-
-_Note: Above steps will NOT deploy demo templates. To deploy demo templates, use [pre-packaged demo templates](#installing-pre-packaged-solution-template). For PROFILE_NAME, substitute the name of an AWS CLI profile that contains appropriate credentials for deploying in your preferred region._
 
 ## Custom Metrics
 
